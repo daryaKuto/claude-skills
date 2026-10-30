@@ -1,6 +1,6 @@
 ---
 name: code-council
-description: Council review in three modes, accuracy first (it spends tokens rather than be wrong). code mode reviews a diff, PR, branch or files; plan mode reviews a plan, spec or hypothesis before work starts; implementation mode checks that a diff does what its plan says. Four independent Sonnet lenses, one Opus chairman that merges, then batched refuters that try to disprove every finding by a different method (a second blind refuter that must run something for every high or critical finding). External facts go to ONE hyperresearch run at the light tier, only when a finding depends on one and the user agrees. Use when the user asks for a "council" review, a multi-persona review, to "review the plan", "test this hypothesis", "check the implementation against the plan", or invokes /code-council.
+description: Council review in three modes, accuracy first (it spends tokens rather than be wrong). code mode reviews a diff, PR, branch or files; plan mode reviews a plan, spec or hypothesis before work starts; implementation mode checks that a diff does what its plan says. Four independent Sonnet lenses, one Opus chairman that merges, then batched refuters that try to disprove every finding by a different method (a second blind refuter that must run something for every medium, high or critical finding). External facts go to ONE hyperresearch run at the light tier, only when a finding depends on one and the user agrees. Use when the user asks for a "council" review, a multi-persona review, to "review the plan", "test this hypothesis", "check the implementation against the plan", or invokes /code-council.
 ---
 
 # Code Council
@@ -41,7 +41,7 @@ writes that mutate the object. Only "write the fix now, would it work?" finds th
 
 One profile only (owner rule 2026-09-26): **spend tokens rather than be wrong.** Every run gets
 14-call reviewers, 12-call refuters that may take 6 more calls rather than guess, and a second
-blind refuter on every high or critical finding. Cost is cut only where it buys no accuracy.
+blind refuter on every medium, high or critical finding. Cost is cut only where it buys no accuracy.
 
 Measured on a real workflow (2026-09-25, see `claim-verification-loop`, "Accuracy first, then token cost"):
 starting an agent costs 50k to 100k weight before it does anything; each tool call adds 5k
@@ -54,7 +54,7 @@ So the council spends on independence and on checking, and cuts only these:
   once. Independence stays where it matters: a refuter never shares a reviewer's context, and
   the second check never sees the first refuter's verdict.
 - **The chairman is told not to use tools** and sees the findings, not the target, so it should
-  take one call. Nothing enforces that: check its call count in `run-cost.py` (step 10).
+  take one call. Nothing enforces that: check its call count in `run-cost.py` (step 12).
 - **The chairman runs on Opus 5.5 at high effort** (owner rule 2026-10-06; `CHAIR` in the
   script). It is the one agent whose judgement shapes every finding (merge, dismiss, severity,
   research questions), and a single Opus call does not hit the rate limits that kill an Opus
@@ -68,7 +68,7 @@ So the council spends on independence and on checking, and cuts only these:
 Estimates from the measured per-agent costs (entry cost plus calls), not a measured run of
 this design. It can cost as much as the old council: it buys reviewers and refuters that read
 callers and run checks, where the old one had 27 agents that mostly read only the diff.
-After the first real run, measure it with `run-cost.py` (step 10) and correct this table.
+After the first real run, measure it with `run-cost.py` (step 12) and correct this table.
 A hyperresearch light run is extra, is not measured yet, and runs outside the workflow, so
 `run-cost.py` does not see it: check the session total instead (for example with `/cost`).
 
@@ -99,13 +99,16 @@ A hyperresearch light run is extra, is not measured yet, and runs outside the wo
    - The review does not depend on live data: skip this step.
 3. **Research before the council (plan mode only, and only when the plan's premise is an
    external fact:** a library's behaviour, a vendor limit, a standard). Run the research gate in
-   step 7 first, then append the digest to `args.context` so the reviewers see it. Otherwise
-   let the reviewers raise research questions; step 7 handles them.
+   step 8 first, then append the digest to `args.context` so the reviewers see it. Otherwise
+   let the reviewers raise research questions; step 8 handles them.
 4. **Estimate.** Tell the user in one line: agents (4 reviewers + 1 chairman + one refuter per
-   5 retained findings + one second-check refuter per 5 high findings, plus the snapshot
+   5 retained findings + one second-check refuter per 5 medium, high or critical findings, plus the snapshot
    verifier if step 2 ran) and the estimate from the cost table. This is information, not a
    reason to shrink the run.
-5. **Launch:**
+5. **Held-back checks.** Before step 6: write 1 or 2 held-back checks (a test, a command or a
+   claim to prove) to `<run folder or scratchpad>/heldback.md`; keep them out of `args`, so no
+   lens or refuter sees them.
+6. **Launch:**
    ```
    Workflow({ scriptPath: "<home>/.claude/skills/code-council/scripts/council-workflow.js",
      args: { mode, targetDescription, reviewTarget, repoRoot, context, snapshot,
@@ -113,14 +116,14 @@ A hyperresearch light run is extra, is not measured yet, and runs outside the wo
    ```
    `lenses` (optional, `[{ key, label, focus }]`) replaces the mode's four lenses; the
    `/code-review` command uses it to run eight. Severity runs low, medium, high, critical;
-   critical and high both get the second check.
+   medium, high and critical all get the second check.
    `projectRules`: paste the project's hard stops (for example: no `git stash`, no
    writes, no printing secrets, emails or user ids). `targetFiles` is optional; the script
    reads file names from the diff headers.
    **While it runs, the user's follow-up questions are yours, not the agents'.** Answer them
    in the main thread. Never put them in `args`, never SendMessage them to a workflow agent,
    and do not relaunch the run to include them.
-6. **Failures and stray messages first.**
+7. **Failures and stray messages first.**
    - `failedAgents` not 0: re-run those agents (resume the run) before anything else. A failed
      agent is not "no findings".
    - `ignoredMessages` not empty: a message that was not the task reached those agents (the
@@ -129,7 +132,7 @@ A hyperresearch light run is extra, is not measured yet, and runs outside the wo
      named agents' findings: if any answer the stray question instead of reviewing the target,
      that run does not count. Relaunch with `args.attempt` raised by 1 (it changes every
      prompt, so nothing comes back from cache) and tell the user why.
-7. **Research gate.** If the result has `stage: "needs-research"`, the chairman found findings
+8. **Research gate.** If the result has `stage: "needs-research"`, the chairman found findings
    that depend on external facts (up to 5 merged questions). Ask the user once
    (AskUserQuestion), listing the questions and the findings that depend on them:
    - **Run light research (recommended):** one hyperresearch
@@ -144,11 +147,11 @@ A hyperresearch light run is extra, is not measured yet, and runs outside the wo
    byte-identical, so the reviewers and the chairman come back from cache:
    `Workflow({ scriptPath, args: { ...sameArgs, research: "<digest>" }, resumeFromRunId: "<run id>" })`
    (or `researchDecision: "skip"`).
-8. **Re-check before reporting.** You are the orchestrator and own the verdict. Personally
+9. **Re-check before reporting.** You are the orchestrator and own the verdict. Personally
    re-check every item in `orchestratorMustRecheck`: every SPLIT, every high or critical finding CONFIRMED
    or REFUTED, and every finding whose refuter disagreed on severity. Re-run the one command or
    read the one path that decides it. This catches a real error most runs.
-9. **Report,** compactly and intern-readable:
+10. **Report,** compactly and intern-readable:
    - `failedAgents` first if it is not 0: the council did not fully run.
    - Confirmed findings by severity: the problem in plain words, file:line, the evidence and
      method, the fix, and whether the fix was tested.
@@ -159,10 +162,13 @@ A hyperresearch light run is extra, is not measured yet, and runs outside the wo
      (more than 25 findings). Offer the detail; do not dump it.
    - `neverCovered`: target files no reviewer examined. Unexamined is not the same as fine;
      offer a council on just those files.
-10. **Cost.** `python3 ~/.claude/skills/claim-verification-loop/scripts/run-cost.py latest`
+11. **Run the held-back checks.** After the report, one fresh Sonnet agent runs the checks in
+    `heldback.md`. Re-read the file from disk first (compaction cannot lose it). A failure is
+    added to the report as a finding. The workflow script does not run this.
+12. **Cost.** `python3 ~/.claude/skills/claim-verification-loop/scripts/run-cost.py latest`
     (per-agent calls and weight). Report the total in one line. Do not claim a saving you did
     not measure.
-11. **Re-runs (review, fix, review again).** Review only the diff since the commit the last
+13. **Re-runs (review, fix, review again).** Review only the diff since the commit the last
     council saw (`git diff <last-reviewed-sha>..HEAD`). Pass the earlier findings as
     `args.previous`, one line each (`file:line | summary | verdict`); reviewers will not
     re-raise one whose lines did not change. Re-run the snapshot with its diff option (for example
@@ -173,11 +179,11 @@ A hyperresearch light run is extra, is not measured yet, and runs outside the wo
 | Symptom | What happened | Guard |
 |---|---|---|
 | Short findings list | Agents died (rate limit, error) | `failedAgents` must be 0; every agent but the one chairman is Sonnet, max 5 at once |
-| A real bug dropped as "refuted" | The refuter defaulted to refuted when unsure | Refuters return UNVERIFIED when unsure; high REFUTED findings are re-checked in step 8 |
+| A real bug dropped as "refuted" | The refuter defaulted to refuted when unsure | Refuters return UNVERIFIED when unsure; high REFUTED findings are re-checked in step 9 |
 | Refuter agrees with every finding | Same method as the reviewer, same answer | Refuters must use a different method; the second check must run something |
 | Findings cite a web page nobody read | A reviewer guessed about a library | Reviewers cannot search the web; external facts go through the research gate |
 | Resume re-ran the whole council | An arg other than `research` changed | Keep every other arg byte-identical when resuming |
-| Reviewers answered the user's follow-up question instead of reviewing | A mid-run message reached the running agents | Agents are told to ignore it and list it in `ignoredMessages`; the orchestrator answers the user itself and relaunches with `attempt` + 1 if the run was affected (step 6) |
+| Reviewers answered the user's follow-up question instead of reviewing | A mid-run message reached the running agents | Agents are told to ignore it and list it in `ignoredMessages`; the orchestrator answers the user itself and relaunches with `attempt` + 1 if the run was affected (step 7) |
 | Plan passes review, fails in the first hour | Only facts were checked | The builder lens asks "would this step work if written now" |
 
 ## Provenance

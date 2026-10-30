@@ -1,6 +1,6 @@
 ---
 name: plan-and-build
-description: One command to plan and then implement work of any size. "plan" mode writes a design doc, a plan split into PR-sized chunks, and a decision register that tells each implementing agent which skills to invoke for every step of every task. "go" mode builds one chunk at a time on a plan branch, with fresh Sonnet implementers, a separate reviewer per task, a comment pass and design check per feature, /review-all per chunk, then a PR merged into the plan branch. Ends with a PR from the plan branch to the default branch for the owner to merge. Use for /plan-and-build, "plan this", "build the plan", or any multi-file change the user wants planned before code.
+description: One command to plan and then implement work of any size. "plan" mode writes a design doc, a plan split into PR-sized chunks, and a decision register that tells each implementing agent which skills to invoke for every step of every task. "go" mode builds one chunk at a time on a plan branch, with fresh Sonnet implementers, a separate reviewer per task, a comment pass per feature, /review-all per chunk, then a PR merged into the plan branch. Ends with a PR from the plan branch to the default branch for the owner to merge. Use for /plan-and-build, "plan this", "build the plan", or any multi-file change the user wants planned before code.
 argument-hint: verify <plan file> | plan <idea, ticket or plan file> | go [plan dir]
 ---
 
@@ -115,7 +115,7 @@ The global CLAUDE.md applies in full. This adds what is specific here.
   adjudicators; they stay on Sonnet.
 - **Every review is a Workflow, never one reviewer agent** (owner rule 2026-10-25). This
   overrides every "a fresh reviewer" in this file: the plan review (plan step 8), each task
-  review and fix-round review, the comment audit and design check of the feature gate, the
+  review and fix-round review, the comment audit of the feature gate, the
   chunk deep review and its fix-round review, and the final review. Each one runs with the
   Workflow tool: lens reviewers (one per angle: correctness and tests, security, blast
   radius, lean code, plan conformance and adversarial; pick the lenses that fit), refuters
@@ -128,6 +128,23 @@ The global CLAUDE.md applies in full. This adds what is specific here.
   angle; the owner wants findings cross-checked before they reach them.
 - **A dead, timed-out or empty agent is "not done" or "not reviewed"**, never clean.
   Re-dispatch once, then stop and ask.
+- **Every fix round runs in three phases** (chunk fixes, post-merge
+  fixes, plan and draft fixes alike):
+  1. *Read-only first.* Every critical, high or medium finding that has no blind check which
+     ran something (a grep, a test, a `node -e`, not a re-read of prose) gets one now, from 1
+     or 2 Sonnet refuters at the reviewed commit. UNVERIFIED rows go to 2 or 3 read-only
+     Sonnet settlers, each returning SETTLED, TEST or STILL UNVERIFIED with a cite. Only
+     findings that hold reach the fixer; the rest are logged NOT APPLIED (REFUTED or UNVERIFIED).
+  2. *One writer per file.* Its brief says: find each spot by quoting nearby text, never by a
+     review line number (edits shift lines); a fix that needs a choice the owner has not made
+     is not decided, it goes to the open questions as `Owner answer: pending` with options and
+     a recommendation; if two fixes conflict, apply neither and report both; return a list of
+     every decision you made that neither the review nor the owner made; "your output is
+     re-reviewed by a fresh agent with held-back checks you do not see". `model: "sonnet"`.
+  3. *Fresh re-review* (the review Workflow on the fix) plus 2 to 5 held-back checks the
+     orchestrator wrote from the critical findings and kept out of the writer's brief.
+  Why: one writer given a whole review (1,100 lines, 33 fixes, 60 calls) applied unchecked
+  findings and made design calls on its own, and one big agent can die quietly.
 - **The user owns:** any choice between two reasonable designs, and anything touching
   production data, schema changes, migrations, deploys, secrets, auth or billing. These stop
   the run with the question asked in the `grilling` format: options with pros and cons for
@@ -302,7 +319,7 @@ fact answer has a "How we know", every choice is a register decision, and the pl
    chunk and task size, buildability, commands, a routing row per task, and the design
    interrogation: every subject answered all seven questions, every fact answer cites how we
    know, and no answer is vague ("handled", "should be fine", "TBD"). Fix blockers and
-   re-review once. Cap: 2 rounds, then list what is left for the user.
+   re-review once. Cap: 3 rounds, then list what is left for the user.
 9. **Add it to the central plans page and stop.** The markdown files stay the working
    source. Never publish a separate page for one plan: add the plan (its decisions, chunks,
    tasks and progress, and the design interrogation answers) to the project's central plans
@@ -339,6 +356,13 @@ fact answer has a "How we know", every choice is a register decision, and the pl
    - Start the test stack with the plan's command and check it answers. If it cannot start,
      stop and ask; never fall back to mocks.
    - Log `RUN started <date> plan-sha=<shasum of plan.md> default=<default branch>`.
+   - **Held back.** Write 2 or 3 acceptance checks of your own from the plan's goals. They
+     must not be written in `plan.md` or any file a brief points to, because workers read
+     those. Keep them in a folder outside the repo, for example `~/plans/heldback/<slug>.md` (create the folder; a stable path outside the
+     repo, not the session scratchpad), and log only `HELD-BACK <check names> in
+     ~/plans/heldback/<slug>.md` in `progress.md`; never copy that line into a brief. They run only in "End",
+     before the final `/review-all`. Why: checks a worker never saw show whether it solved the
+     problem or only the visible tests.
    - Unless the plan has one chunk: `git switch <default> && git pull --ff-only && git switch
      -c plan/<slug>`, log `PLAN-BRANCH created <sha>`, then `git push -u origin plan/<slug>`
      and log `PLAN-BRANCH pushed`.
@@ -362,7 +386,9 @@ fact answer has a "How we know", every choice is a register decision, and the pl
    UNVERIFIED ones included, go to
    one fresh worker (`briefs/C<n>-fix.md`), then a review Workflow on the fix diff, then the
    task checks. Log `C<n> fix done open=<count still open>` (log `open=0` with no fix when the
-   review found none). If any stay open, or the verdict is "rethink", stop and ask. Medium and
+   review found none). Chunk fixes get at most 3 rounds (fix worker, then a review Workflow on
+   its diff, counted from the log). If any stay open after round 3, or the verdict is
+   "rethink", stop and ask. Medium and
    low findings go to Postponed. Every `fix now` bug for C<n> must be logged complete before
    the merge; `planned` bugs do not block it.
 3a. **Need and simplicity review** (owner rule 2026-10-25, every chunk). After the deep review
@@ -372,13 +398,16 @@ fact answer has a "How we know", every choice is a register decision, and the pl
    `scripts/need-simplicity-review.js` (copy it into the scratchpad and run it by
    `scriptPath`; args `{title, repo, planDir, branch, base, head, intent, alsoInScope, checks}`;
    `planDir` is the plan folder holding plan.md, amendments.md and register.md, `checks` lists
-   the checks already green at `head`).
+   the checks already green at `head`). The design check needs inputs: pass the `design.md`
+   path and the review focus in `intent`.
    The 5 angles are:
    - necessity: trace every piece to a planned chunk, a decision or a real risk;
    - deletion test: remove each guard in a /tmp copy, and see what breaks and which other
      layer already blocks it;
    - change cost: make 4 realistic future changes and count the files touched;
-   - duplication and layering: count every rule written in more than one place;
+   - duplication and layering: count every rule written in more than one place, and compare
+     the chunk's diff (`git diff <C<n> BASE>..HEAD`) with `design.md` and the review focus for
+     code that duplicates other code, drifts from the design, or could be deleted;
    - complexity and standard-tool alternatives: a library, linter or platform feature that
      already does a hand-written part.
 
@@ -386,7 +415,8 @@ fact answer has a "How we know", every choice is a register decision, and the pl
    check, and one Opus judge writes `reports/C<n>-need-simplicity.md`. The report has a keep,
    simplify or delete table and the lines the confirmed changes would delete.
    Run it after the deep review, never alongside it, so no stage passes 5 agents.
-   Confirmed delete and simplify findings join the step 3 fix worker's brief. A finding
+   Confirmed delete and simplify findings join the step 3 fix worker's brief. Its critical and
+   high findings go through step 3's fix rules. A finding
    whose change would lose real protection not enforced elsewhere is a decision for the
    owner, asked in the grilling format. Log `C<n> need-simplicity <verdict> delete=<lines>`.
 4. **PR and merge.** Each sub-step is skipped if its log line exists.
@@ -405,6 +435,25 @@ fact answer has a "How we know", every choice is a register decision, and the pl
    4. Check it landed: `gh pr view <number> --json state,mergeCommit` shows MERGED, then
       `git fetch origin && git merge-base --is-ancestor <mergeCommit sha> origin/plan/<slug>`
       exits 0. Log `C<n> merged <url>`.
+   4.5. **Re-check the merged tip.** `git switch plan/<slug> && git pull --ff-only`, then run
+      typecheck, lint and tests there, plus any live checks the chunk names if it touched a
+      deployed system (read-only only). A failure re-opens the chunk: log `C<n> reopened
+      <check>` and fix it on a new `plan/<slug>-c<n>r<k>` branch (k = 1, 2, ...) under step
+      3's fix rules. Its sub-steps log `C<n>r<k> pushed`, `C<n>r<k> PR` and `C<n>r<k> merged`,
+      so the skip rule above never skips a reopened chunk. Reopen at most 3 times per chunk,
+      then stop and ask. After `C<n>r<k> merged`, run this tip check again. Log
+      `C<n> tip-check pass` only when it passes.
+   4.6. **Post-merge review, one per 3 merged chunks.** Count merged chunks since the last
+      post-merge review (or the plan start), from the log. At 3, run one review Workflow
+      (the chunk-review angles) on the combined diff of those 3 chunks on `plan/<slug>`, fix
+      by step 3's rules, and log `POSTMERGE-REVIEW chunks=<list> <verdict> open=<n>`. Fixes go
+      on branch `plan/<slug>-pm<k>` (k = 1, 2, ...) through this step 4's PR flow, logging
+      `PM<k> pushed`, `PM<k> PR` and `PM<k> merged`, at most 3 fix rounds. When nothing is
+      left, log `POSTMERGE-REVIEW <k> clean`. Reset the counter to 0. The final `/review-all` in "End" still runs.
+   4.7. **Cost line.** Log `C<n> cost agents=<run> errored=<errored> tokens=<n or unknown>`.
+      For a Workflow run, `python3 ~/.claude/skills/claim-verification-loop/scripts/run-cost.py
+      <run dir>` gives the per-agent token weights (read-only; it takes `latest`, a run dir, or
+      `--json`).
    For a one-chunk plan: steps 1 and 2 with branch `feat/<slug>` and `--base <default>`, and
    no merge.
 5. Update the central plans page (read it first in a new session) with the progress so far
@@ -416,7 +465,15 @@ fact answer has a "How we know", every choice is a register decision, and the pl
 
 ### For each feature F<n> in the chunk
 
-Log `F<n> BASE=<HEAD sha>` unless the line exists. Then each task, one at a time:
+Log `F<n> BASE=<HEAD sha>` unless the line exists. Then each task, one at a time. Exception: implementers of tasks in this feature whose files do not overlap
+(compare their plan.md file lists) may run in parallel, at most 5 implementers at once, each in
+its own `git worktree add` checkout. Each task still gets its own brief and checks, and they
+merge into the chunk branch in plan order. Review Workflows and fix loops then run one task at
+a time, never alongside implementers or another review, so no moment has more than 5 agents
+live. Each worktree gets its own
+test ports and database, so parallel tasks share no state, and logs its own `T<n> started
+BASE=<sha>` from the chunk branch tip when it starts. Tasks that share a file stay
+one at a time. Steps:
 
 1. Log `T<n> started BASE=<HEAD sha>` unless it exists; on resume, reuse that BASE.
 2. Write `briefs/T<n>.md` as pointers, not copies: the plan.md section for T<n>, design.md,
@@ -465,11 +522,8 @@ goes to the Pre-existing bug flow with scope F<n>, never to a fix worker or Post
       fixes accepted flags within the feature, and commits; then the fix loop rules apply.
       Unfixable flags go to Postponed. Log `F<n> comments done`.
    4. comment-sicko returns nothing usable twice: revert its edits, log it, continue.
-2. **Design and bloat check.** A review Workflow compares `git diff <F<n> BASE>..HEAD` with
-   `design.md` and the review focus, and lists code in this feature that duplicates other code
-   or could be deleted (review `reports/F<n>-design.md`). Critical and high go to a fresh
-   worker (`briefs/F<n>-fix.md`) and the fix loop rules, review Workflow included. The check
-   itself does not re-run. Medium and low go to Postponed. Log `F<n> complete`.
+2. Log `F<n> complete`. The design and bloat check is no longer a feature step: chunk step 3a
+   asks "is this duplicate or deletable" once per chunk.
 3. Send the owner a progress update (below). Log `F<n> update sent`.
 
 ### Pre-existing bug flow
@@ -549,7 +603,7 @@ feature gate (F<n>) or the chunk review (C<n>) that found it. Bug number k is th
 
    Verdict pass or fail. Log `S bug <k> adjudicated <pass|fail> round <r>`. Fail: its findings
    start a fix round under step 7's rules, then the adjudicator runs again on the new diff.
-   Cap 2 adjudication rounds, then ask.
+   Cap 3 adjudication rounds, then ask.
 6. **Resume.** Runs after `S-bug-<k> complete` for fix now (log it after the adjudicator's
    pass), or straight after triage for fix next, plan and not a bug.
    - Task scope, found by the worker: re-dispatch T<n> from the current HEAD and log
@@ -558,7 +612,7 @@ feature gate (F<n>) or the chunk review (C<n>) that found it. Bug number k is th
    - Task scope, found by the task's reviewer: re-run the review Workflow on T<n> at the current
      HEAD (next review number); no worker re-dispatch.
    - Feature or chunk scope: continue at the step that was paused (the feature gate check, or
-     chunk step 3's fix worker and `open=` count). Comment pass and design check do not
+     chunk step 3's fix worker and `open=` count). The comment pass does not
      re-run.
 
    Every later reviewer of S (task reviewers, the feature checks, the chunk review) gets the
@@ -591,8 +645,11 @@ a section that has nothing in it.
 
 ### End
 
-1. When every chunk is merged: run `/review-all branch` (interactive) on `plan/<slug>`
-   against the default branch, to catch problems between chunks.
+1. When every chunk is merged: run the held-back checks from the `HELD-BACK` line (log
+   `HELD-BACK result <pass|fail per check>`; a fail re-opens the chunk that owns that goal, or ask the owner if none does, with
+   step 3's fix rules). Then run `/review-all branch` (interactive) on `plan/<slug>`
+   against the default branch, to catch problems between chunks. Log a plan-total cost line
+   the same way as a chunk's: `END-COST agents=<n> errored=<n> tokens=<n or unknown>`.
 2. Open the PR with `gh pr create --base <default> --head plan/<slug>` (or reuse it, found
    with `gh pr list --head plan/<slug>`). Do not merge it. This is the only PR into the
    default branch in the whole run. Its body links `release.md` and says: merge first, then
@@ -640,6 +697,10 @@ logged. Reuse logged BASE and FIXBASE shas and the logged counts for every cap. 
   discarding them (`git restore` and `git clean` on those paths only) and re-dispatching the
   task, and wait for a yes. Otherwise show `git status` and ask.
 - HEAD is not where the log implies: show `git log <base>..HEAD --oneline` and ask.
+- Read the newer log lines too and continue from them: `HELD-BACK` (if `~/plans/heldback/<slug>.md`
+  is missing, write 2 or 3 new checks from the plan goals and log `HELD-BACK rewritten`),
+  `C<n> reopened`, `C<n>r<k> ...`, `PM<k> ...`, `POSTMERGE-REVIEW`, `HELD-BACK result`, the
+  `C<n> cost` lines and `END-COST`.
 - An adjudicator worktree is left from a crash: `git worktree list` shows one under the
   scratchpad. Remove it with `git worktree remove --force <path>`, then `git worktree prune`.
 

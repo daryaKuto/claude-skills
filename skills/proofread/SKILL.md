@@ -194,8 +194,9 @@ Run `verify-findings` on the single claim, reading code on `origin/main` after `
 unless the claim names another ref. The orchestrator splits it into conditions and rates the
 finding's severity. One
 Sonnet worker per condition (at most 5) checks it with its own method, using the project's
-proof recipes where they fit. A high or critical finding also gets one blind refuter with a
-different method. Combine with strict AND. A dismissal needs as much proof as a confirmation.
+proof recipes where they fit. A medium, high or critical finding also gets one blind refuter with a
+different method (low findings do not). When the finding is about live state, finding mode
+re-reads the live system (read-only) and labels the finding UNVERIFIED if it cannot. Combine with strict AND. A dismissal needs as much proof as a confirmation.
 If the finding came from a review, the agent that raised it does not check it.
 
 If the only behavioural proof would write to a live system (a command to a device, a row in

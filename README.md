@@ -63,6 +63,7 @@ Claude follows it too.
 | Get an answer from another person or team | "ask the backend team about X" | `to-questionnaire` |
 | Do a manual step only you can do (dashboard, keys) | "rotate the API key", "set up the account" | `wizard` |
 | See where a long session stands | "where are we?", "status" | `whatnow` |
+| Brief subagents or plan a fan-out | "dispatch agents for this", "write the agent prompts" | `agent-orchestration` |
 
 ## The skills
 
@@ -77,7 +78,10 @@ Claude follows it too.
     decision register that tells each worker which skills to use for each step.
   - `/plan-and-build go` builds one chunk at a time on a `plan/<slug>` branch. Each task gets a
     fresh implementer and a separate reviewer, each chunk gets a full review and a "do we need
-    this, and is it simple enough?" review, then a PR into the plan branch.
+    this, and is it simple enough?" review, then a PR into the plan branch. After each merge it
+    re-runs the checks on the merged branch and logs a cost line; every 3 merged chunks get one
+    more review of their combined diff; and 2 or 3 held-back checks, written at the start and
+    kept away from every worker, run at the end.
   - `/plan-and-build release` runs the release runbook after you merge.
 
   It never merges into your default branch. That last PR is yours. The release step refers to
@@ -93,7 +97,9 @@ Claude follows it too.
 
 - **`investigate`**: for questions ("why does X happen?", "how does Y work?"). It fans out
   parallel agents in a Workflow, tries to disprove every finding, and when it finds a real bug in
-  your code it sends fresh agents to fix it, then checks the fix. It stops and asks before
+  your code it sends fresh agents to fix it, then checks the fix. One extra "contrarian" agent
+  argues the opposite answer, and findings past the top 3 per agent are listed as unverified
+  instead of dropped. It stops and asks before
   touching production data, secrets, auth or billing.
 
 ### Verification
@@ -116,13 +122,19 @@ Claude follows it too.
 
 - **`code-review`**: eight independent reviewers (architecture, security, scalability, edge
   cases, tests, failure detection, data integrity, UX and accessibility), then refuters who try
-  to disprove each finding by a different method. Runs typecheck, lint, tests and build first.
+  to disprove each finding by a different method. Medium, high and critical findings get a
+  second, blind refuter that must run something. Runs typecheck, lint, tests and build first.
   Posts to GitHub only after you say yes.
 - **`code-council`**: four reviewers and one chairman who merges their findings. Three modes:
   review code, review a plan before work starts, or check that a diff does what its plan says.
-- **`review-all`**: runs five review skills on the same change and merges them into one ranked,
+  Before it starts you set aside 1 or 2 held-back checks that no reviewer sees; a fresh agent
+  runs them after the report.
+- **`review-all`**: runs five review skills on the same change, sends the findings from the
+  four that do not refute their own to refuters, and merges everything into one ranked,
   deduplicated report.
-- **`review-panel`**: several reviewers with different roles check the same change.
+- **`review-panel`**: several reviewers with roles you choose check the same change, spec or
+  document. It runs `code-council` with your list of roles, so it gets the same refuters and
+  chairman; its finalize mode applies only confirmed fixes and has them reviewed again.
 - **`review-before-merge`**: a diff-scoped review that answers "can this branch merge?".
 - **`track-review-findings`**: keeps review findings stable across pushes, so a re-review marks
   old findings resolved instead of raising them again.
@@ -131,6 +143,9 @@ Claude follows it too.
 
 ### Orchestration and context
 
+- **`agent-orchestration`**: how to dispatch subagents: a cheaper worker model (for example Sonnet) and a stronger judge (for example Opus), at most
+  5 at once, a four-part brief, snapshot live state once and let many agents read it, size the
+  run before you launch it, and never count a dead agent as a clean result.
 - **`whatnow`**: a short status of a long session: what is done, what is running (agents and
   workflows included), and what is next.
 - **`prompt-caching`**: how to order prompts and subagent briefs so repeated calls reuse the

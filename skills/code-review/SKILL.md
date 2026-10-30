@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Multi-agent code review of local changes or a GitHub PR, in any project. Eight independent Sonnet reviewers (architecture, security, scalability, edge cases, test coverage, failure detection, data integrity and concurrency, UX and accessibility), then refuters that try to disprove every finding by a different method, and a second blind refuter for critical and high findings. Runs typecheck, lint, tests and build first; posts to GitHub only with the user's yes. Accuracy first. Use when the user asks for a code review, a PR review, "review my changes", or invokes /code-review with a PR number, URL or nothing.
+description: Multi-agent code review of local changes or a GitHub PR, in any project. Eight independent Sonnet reviewers (architecture, security, scalability, edge cases, test coverage, failure detection, data integrity and concurrency, UX and accessibility), then refuters that try to disprove every finding by a different method, and a second blind refuter for medium, high and critical findings. Runs typecheck, lint, tests and build first; posts to GitHub only with the user's yes. Accuracy first. Use when the user asks for a code review, a PR review, "review my changes", or invokes /code-review with a PR number, URL or nothing.
 argument-hint: [pr-number | pr-url | blank for local review]
 ---
 
@@ -12,7 +12,7 @@ argument-hint: [pr-number | pr-url | blank for local review]
 
 A workflow review: eight reviewers, each looking through one lens, blind to each other. A
 chairman merges their findings, and refuters try to prove each finding wrong by a different
-method before it reaches the report. Critical and high findings get a second refuter that
+method before it reaches the report. Medium, high and critical findings get a second refuter that
 never sees the first one's verdict. Accuracy-only (owner rule 2026-09-26: spend tokens rather
 than be wrong).
 
@@ -111,11 +111,15 @@ from the user's side first.
 `.css`, `.scss`, `.html`) and say so. Every other lens always runs.
 
 **Estimate, then launch.** Tell the user in one line: 8 reviewers (5 at a time) + 1 chairman +
-one refuter per 5 retained findings + one second-check refuter per 5 critical or high findings,
+one refuter per 5 retained findings + one second-check refuter per 5 medium, high or critical findings,
 plus the snapshot verifier if Phase 2 pulled live state. A typical run with 12 retained
-findings, 3 of them high or critical, is 13 agents, an estimated 1.5M to 3.7M weight (from the
+findings, 3 of them medium, high or critical, is 13 agents, an estimated 1.5M to 3.7M weight (from the
 measured per-agent costs in `claim-verification-loop`, not a measured run). The estimate is
 information, not a reason to shrink the run.
+
+**Held-back checks.** Before launch, follow code-council step 5 (write 1 or 2 checks to
+`heldback.md`, kept out of `args`); after the report, follow its step 11 (one fresh Sonnet
+agent runs them, and a failure becomes a finding).
 
 ```
 Workflow({ scriptPath: "<home>/.claude/skills/code-council/scripts/council-workflow.js",

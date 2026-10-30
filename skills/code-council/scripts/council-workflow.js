@@ -6,7 +6,7 @@ export const meta = {
     { title: 'Review', detail: '4 independent lenses, chosen by mode', model: 'sonnet' },
     { title: 'Synthesis', detail: 'one chairman: dedupe, drop nitpicks, collect research questions', model: 'opus' },
     { title: 'Verify', detail: 'refuter lanes of up to 5 findings, grouped by file, different method than the reviewer', model: 'sonnet' },
-    { title: 'Second check', detail: 'a blind second refuter for every high finding, must run something', model: 'sonnet' },
+    { title: 'Second check', detail: 'a blind second refuter for every medium, high or critical finding, must run something', model: 'sonnet' },
   ],
 }
 
@@ -192,7 +192,7 @@ const covered = new Set(reviews.flatMap(r => r.covered || []).filter(Boolean))
 const samePath = (c, f) => { c = c.split(/[\s:(]/)[0]; return c === f || c.endsWith('/' + f) || f.endsWith('/' + c) && c.includes('/') }
 const neverCovered = targetFiles.filter(f => ![...covered].some(c => samePath(c, f)))
 const needsLive = reviews.flatMap(r => r.needsLive || [])
-// Any agent that saw a stray message: the orchestrator reads its output with suspicion (SKILL.md step 6).
+// Any agent that saw a stray message: the orchestrator reads its output with suspicion (SKILL.md step 7).
 const ignored = rs => rs.flatMap(r => (r?.ignoredMessages || []).map(m => `${r.lens || r.ids?.join(',') || 'chairman'}: ${m}`))
 
 // Research gate: stop and hand the questions to the orchestrator, who asks the user and runs
@@ -230,10 +230,11 @@ const first = await limited(lanes.map((g, i) => () =>
   agent(refuterPrompt(g, METHOD_A), { label: `refute:${i + 1}`, phase: 'Verify', schema: VERDICT_SCHEMA, ...SONNET })
     .then(r => ({ ids: g.map(f => f.id), verdicts: r?.verdicts || [], ignoredMessages: r?.ignoredMessages, failed: !r }))))
 
-// Every high or critical finding gets a second refuter that never sees the first verdict.
+// Every medium, high or critical finding gets a second refuter that never sees the first verdict.
 let second = []
 const isHigh = f => f.severity === 'high' || f.severity === 'critical'
-const highs = toVerify.filter(isHigh)
+const needsSecond = f => isHigh(f) || f.severity === 'medium'
+const highs = toVerify.filter(needsSecond)
 if (highs.length) {
   phase('Second check')
   const lanes2 = chunk(highs, Math.min(MAX_PER_STAGE, Math.ceil(highs.length / 5)))
@@ -246,7 +247,7 @@ const pick = (runs, id) => runs.flatMap(r => r.verdicts).find(v => v.id === id)
 const laneFailed = (runs, id) => runs.some(r => r.failed && r.ids.includes(id))
 const out = toVerify.map(f => {
   const a = pick(first, f.id)
-  const b = isHigh(f) ? pick(second, f.id) : undefined
+  const b = needsSecond(f) ? pick(second, f.id) : undefined
   // Either refuter's verdict counts; AGENT FAILED only when no refuter produced one.
   let verdict = a?.verdict ?? b?.verdict ??
     (laneFailed(first, f.id) || laneFailed(second, f.id) ? 'AGENT FAILED' : 'UNVERIFIED')
@@ -262,7 +263,7 @@ return {
     ...second.filter(r => r.failed).map(r => `second check for ${r.ids.join(',')}`)],
   confirmed: by('CONFIRMED'), partly: by('PARTLY'), unverified: by('UNVERIFIED'),
   split: by('SPLIT'), refuted: by('REFUTED'), agentFailed: by('AGENT FAILED'),
-  // The orchestrator re-checks these itself before reporting (SKILL.md step 8).
+  // The orchestrator re-checks these itself before reporting (SKILL.md step 9).
   orchestratorMustRecheck: out.filter(f => f.verdict === 'SPLIT' ||
     (isHigh(f) && ['CONFIRMED', 'REFUTED'].includes(f.verdict)) ||
     (f.check?.severity && f.check.severity !== f.severity)).map(f => `${f.id} ${f.verdict} [${f.severity}] ${f.summary}`),
