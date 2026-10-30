@@ -3,19 +3,21 @@ export const meta = {
   description: 'Fan out finders over sub-questions, then try to disprove every finding, then one Opus adjudicator merges',
   whenToUse: 'Called by the investigate skill. args: {question, kind, anchorPath, outDir, maxAgents, subquestions: [{id, prompt}]} for a full run, or {..., findings: [{id, claim, evidence, method, severity, location}]} (non-empty) to verify only.',
   phases: [
-    { title: 'Find', detail: 'one Sonnet finder per sub-question, at most 5 at once' },
+    { title: 'Find', detail: 'one Sonnet finder per sub-question plus one contrarian finder, at most 5 at once' },
     { title: 'Gap', detail: 'one completeness critic, then one gap round' },
-    { title: 'Verify', detail: 'a different-method refuter per finding, a blind second refuter for high and critical' },
+    { title: 'Verify', detail: 'a different-method refuter per finding, a blind second refuter for medium, high and critical' },
     { title: 'Adjudicate', detail: 'one Opus adjudicator merges' },
   ],
 }
 
 // Owner rule: at most 5 agents running at once, whatever the harness allows.
 const AT_ONCE = 5
-const MAX_AGENTS = args.maxAgents || 15
+const MAX_AGENTS = args.maxAgents || 16
 const FINDINGS_PER_FINDER = 3
 let used = 0
 const notRun = []
+// Findings past FINDINGS_PER_FINDER are not verified but never dropped: the report lists them as UNVERIFIED.
+const unverifiedExtra = []
 
 // The last slot is reserved for the adjudicator, so a busy run still gets a verdict.
 async function run(prompt, opts, isAdjudicator) {
@@ -120,7 +122,7 @@ function finderPrompt(sq) {
   return `${shared}
 For code or system questions, follow superpowers:systematic-debugging rules: root cause before any fix idea, one written hypothesis at a time, trace data backward to its source.
 Your sub-question (${sq.id}): ${sq.prompt}
-Write your notes to ${args.outDir}/notes/${sq.id}.md. Split every finding into single facts and return at most ${FINDINGS_PER_FINDER}, the ones that matter most. End with a committed answer, your confidence, and what evidence would change your mind. List every source you skipped and why.`
+Write your notes to ${args.outDir}/notes/${sq.id}.md. Split every finding into single facts and return every finding, most important first, one fact each. End with a committed answer, your confidence, and what evidence would change your mind. List every source you skipped and why.`
 }
 
 const SEVERITY_ORDER = ['critical', 'high', 'medium', 'low', 'info']
@@ -134,8 +136,15 @@ if (args.findings !== undefined) {
   findings = args.findings
 } else {
   phase('Find')
-  const subs = args.subquestions || []
-  const toFindings = (r, id) => (r ? r.findings.slice(0, FINDINGS_PER_FINDER).map((f) => ({ ...f, id: `${id}.${f.id}` })) : [])
+  // One contrarian finder per run (not per sub-question). Set args.contrarian=false for a quick run.
+  const contrarian = args.contrarian === false ? [] : [{ id: 'c1', prompt: `Argue the OPPOSITE of the most likely answer to the question above. State what that likely answer is, then find the best evidence that it is wrong or incomplete, and commit to the alternative if the evidence supports it.` }]
+  const subs = [...(args.subquestions || []), ...contrarian]
+  const toFindings = (r, id) => {
+    if (!r) return []
+    const tag = (f) => ({ ...f, id: `${id}.${f.id}` })
+    unverifiedExtra.push(...r.findings.slice(FINDINGS_PER_FINDER).map(tag))
+    return r.findings.slice(0, FINDINGS_PER_FINDER).map(tag)
+  }
   const found = await inBatches(subs, (sq) => run(finderPrompt(sq), { label: `find:${sq.id}`, phase: 'Find', schema: FINDINGS, model: 'sonnet', effort: 'high' }))
   answers = found.map((r, i) => ({ id: subs[i].id, answer: r ? r.answer : 'NOT RUN', skipped: r ? r.skipped : [] }))
   findings = found.flatMap((r, i) => toFindings(r, subs[i].id))
@@ -170,7 +179,7 @@ function groups(list) {
 }
 const listFindings = (g, withEvidence) => g.map((f) => `- ${f.id}: ${f.claim}
   Location: ${f.location || 'n/a'}${withEvidence ? `
-  Finder method: ${f.method || 'unknown'}. Finder evidence: ${f.evidence || 'none given'}` : ''}`).join('\n')
+  Finder method: ${f.method || 'unknown'}.${f.evidence ? ` Finder evidence: ${f.evidence}` : ''}` : ''}`).join('\n')
 
 const VERDICTS = {
   type: 'object',
@@ -190,7 +199,7 @@ Load the verify-findings skill first. You are a blind refuter: you see only each
 ${listFindings(g, false)}`
 }
 
-const severe = findings.filter((f) => ['critical', 'high'].includes(f.severity))
+const severe = findings.filter((f) => ['critical', 'high', 'medium'].includes(f.severity))
 const jobs = [
   ...groups(findings).map((g, i) => ({ g, blind: false, label: `refute:${i + 1}` })),
   ...groups(severe).map((g, i) => ({ g, blind: true, label: `blind:${i + 1}` })),
@@ -209,8 +218,9 @@ phase('Adjudicate')
 const final = await run(`You are the adjudicator. Decide from the evidence below only; do not run new searches or commands. Merge the finders' and refuters' output into one verdict per finding. Rules: a CONFIRMED with falsifierChecked=false or doc-only evidence becomes UNVERIFIED; refuters that disagree mean UNVERIFIED unless one ran a decisive command; a finding with no refuter result is UNVERIFIED, never confirmed; drop duplicates. No em dashes.
 Question: ${args.question}
 Answers per sub-question: ${JSON.stringify(answers)}
+Extra findings that were not verified (list each as UNVERIFIED, with its id, claim and the check that would settle it): ${JSON.stringify(unverifiedExtra)}
 Findings with verdicts: ${JSON.stringify(verifiedAll)}
 Agents not run: ${JSON.stringify(notRun)}`,
   { label: 'adjudicator', phase: 'Adjudicate', schema: FINAL, model: 'opus', effort: 'high' }, true)
 
-return { final, answers, notRun, agentsUsed: used, maxAgents: MAX_AGENTS }
+return { final, answers, unverifiedExtra, notRun, agentsUsed: used, maxAgents: MAX_AGENTS }

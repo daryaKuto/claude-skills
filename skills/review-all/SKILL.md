@@ -64,15 +64,26 @@ before you start the next one. That way the merge reads files, not a long contex
 ## Step 3: merge into one report
 
 1. Read the five scratch files.
-2. Merge duplicates: the same defect at the same `file:line`, or the same root cause, is one
+2. **Refute skills 2 to 5.** `code-review` already refutes its own findings. The findings from
+   ponytail-review, blast-radius, thermo-nuclear-code-quality-review and interrogate arrive
+   unchecked. Batch them, about 5 per Sonnet agent, grouped by file. Each refuter tries to
+   disprove its findings by a different method than the one that found them (run a command,
+   or read the connected code instead of the diff). Follow code-council's refuter rules
+   (`~/.claude/skills/code-council/SKILL.md`, "Accuracy first, then cost" section). Medium, high and
+   critical findings also get a second blind refuter: a different agent that never sees the first
+   verdict and must run something (a command or a test), not only read. Verdicts: REFUTED (drop it, and note it in the report),
+   CONFIRMED (keeps its proof), UNVERIFIED (when unsure; never default to REFUTED). At most 5
+   agents at once. A dead or errored refuter is not a verdict: re-run it once, then list its
+   findings as UNVERIFIED and the refuter under "Did not run".
+3. Merge duplicates: the same defect at the same `file:line`, or the same root cause, is one
    finding. Keep the clearest wording and list every skill that found it.
-3. Severity: map every skill's scale to one: critical, high, medium, low (Critical = critical,
+4. Severity: map every skill's scale to one: critical, high, medium, low (Critical = critical,
    Important = high, Must fix = high, Minor or Nice to have = low). Use the highest severity
    any skill gave it. A finding that two or more skills
    reached on their own goes up one level (global CLAUDE.md rule).
-4. Proof: every finding needs `file:line` plus a command, test or query that shows it. A
-   finding without that is labelled UNVERIFIED. Keep it in the report and don't drop it.
-5. Conflicts: if one skill flags something and another argues it is fine, keep the finding and
+5. Proof: every finding needs `file:line` plus a command, test or query that shows it. A
+   finding that survived step 2 keeps that proof. Any other finding is labelled UNVERIFIED. Keep it in the report and don't drop it.
+6. Conflicts: if one skill flags something and another argues it is fine, keep the finding and
    show both sides in one line.
 
 Load the `unslop` skill, then write the report:
@@ -82,6 +93,9 @@ Load the `unslop` skill, then write the report:
 - **Findings,** most severe first. Each one: the problem in plain words, a concrete example,
   why it matters, the smallest fix (prefer fixes that delete code), and which skills found it.
   Evidence (`file:line`, command and output) goes last, under "How we know".
+- **Cost:** one line. Count the agents you launched and the refuters yourself. Take tokens from
+  code-review's run-cost line ("Agents: ... cost: ..."). Write "tokens unknown" for the other four
+  skills, because they report no cost.
 - **Did not run:** any skill that failed twice, and why.
 
 Write the merged report to `<scratchpad>/review-all/report.md`. The session model does the

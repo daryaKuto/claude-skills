@@ -23,6 +23,7 @@ Skip for docs-only diffs or trivial changes. Not about running several reviewers
 4. **Rerun everything for real**: build, lint, typecheck, full test suite, in the worktree, against real dependencies, no mocks. For UI, drive the app: golden path plus one edge case, screenshot or log as evidence.
 5. **Classify every failure**: signal is touching a changed file; proof is rerunning suite on base SHA in a second worktree. Fails both = pre-existing; fails only head = regression.
 6. **Name gaps; back every finding with evidence**: `file:line` plus a reproducing command, or UNVERIFIED.
+6b. **Read the live system**: if the branch has a migration, a deploy or an infrastructure change, read the live system's current state (read-only) and confirm it is what the change expects (the object it alters exists and has the shape the change assumes; a rehearsal, if one ran, applied cleanly). Confirming the change itself landed is the release's read-back, after merge. If you cannot read it, report the change as UNVERIFIED.
 7. **Report, then stop**: never merge your own review; remove the worktree once saved elsewhere.
 8. **Merge separately, later**: record head SHA, review, approver, timestamp. Merge command success is not that record.
 

@@ -49,7 +49,7 @@ Kind:
 Size:
 - **quick**: one fact the orchestrator can look up in a few calls. Answer directly, no
   workflow, and say so.
-- **standard** (default): 3 or 4 sub-questions, agent budget 15 for the find-and-verify
+- **standard** (default): 3 or 4 sub-questions, agent budget 16 (15 plus the contrarian finder) for the find-and-verify
   workflow, about 5 to 15 minutes.
 - **deep**: only when the owner says "deep research". Agent budget 20 for research and
   verification together, hyperresearch included, about 30 to 45 minutes. Never upgrade to
@@ -88,17 +88,22 @@ Tell the owner in one line: the sub-questions, the agent budget, the expected ti
 wait for a reply unless the budget is above 20.
 
 Run the Workflow tool with `scriptPath: ~/.claude/skills/investigate/scripts/find-verify.js`
-and args `{question, kind, anchorPath, outDir, subquestions, maxAgents}` (15 standard). For a
+and args `{question, kind, anchorPath, outDir, subquestions, maxAgents}` (16 standard: 15 plus the
+contrarian finder). For a
 verify-only run pass `findings: [{id, claim, evidence, method, severity, location}]`
 (non-empty) instead of `subquestions`. The script:
 1. **Find**: one Sonnet finder per sub-question, in batches of 5. Each splits findings into
-   single facts (at most 3, the ones that matter most), cites every one, ends with a committed answer, its confidence and what would
+   every finding, most important first, one fact each (the first 3 are verified, the rest come back as `unverifiedExtra` and the report
+   lists them as UNVERIFIED, never dropped), cites every one, ends with a committed answer, its confidence and what would
    change its mind, and lists every skipped source with the reason. Code finders follow the
-   `superpowers:systematic-debugging` rules.
+   `superpowers:systematic-debugging` rules. Every run with a Find phase (one with `subquestions`; verify-only runs skip Find) adds one contrarian
+   finder per run (not per sub-question; pass `contrarian: false` to skip). It argues the
+   opposite of the most likely answer and looks for evidence for it. It counts toward the 5
+   at once and the agent budget.
 2. **Gap**: one completeness critic, then one gap round of at most 3 sub-questions. Never a
    second round.
 3. **Verify**: most severe first, Sonnet refuters take findings in groups of 3, load
-   `verify-findings` and must use a different method from the finder. High and critical
+   `verify-findings` and must use a different method from the finder. Medium, high and critical
    findings also go to a blind refuter that sees only the claim and its location.
 4. **Adjudicate**: one Opus agent, with the last budget slot reserved for it, merges into
    CONFIRMED, REFUTED or UNVERIFIED per finding from the evidence only (no new searches).
@@ -127,6 +132,11 @@ If no finding is CONFIRMED and `fixableInOwnCode`, stop here: reply with the ver
 folder path and any decisions.
 
 ## Step 5. Fix confirmed defects
+
+First, write 1 or 2 held-back checks per confirmed defect (a command or query that shows
+the defect). Each must differ from the finding's own `reproduce` command, which the fixer
+already sees. Save them in the run folder, outside every fixer, reviewer and adjudicator
+brief. In Step 6 one fresh Sonnet agent (not the orchestrator) runs them.
 
 Only CONFIRMED findings with `fixableInOwnCode` are fixed. UNVERIFIED ones are listed, not
 fixed. At most 5 findings per run; list the rest and ask.
@@ -175,7 +185,11 @@ fixed. At most 5 findings per run; list the rest and ask.
 
 Refresh `anchor.md` (line numbers moved). Run the workflow again with `findings` set to the
 fixed findings, each `claim` reworded as "this defect still reproduces at HEAD of fix/<slug>",
-`method: "repo"`, the original severity and location, and `maxAgents` = 2 x findings + 1. A
+`method: "repo"`, `evidence: ""` (empty), the original severity and location, and `maxAgents` = 2 x findings + 1. The re-verify
+refuters are fresh agents that never saw the original refute pass, and they get a fresh
+brief: the reworded claim, location and `method` only, no earlier verdicts or evidence. Have one fresh
+Sonnet agent run the held-back checks from the run folder at HEAD too. A failing held-back check means not fixed, even if
+the refuters say REFUTED. A
 REFUTED verdict means fixed. CONFIRMED means it is still there: that is the next fix round,
 inside the same 3-round cap. Update `report.md` with a "Fixed" section.
 
@@ -188,7 +202,7 @@ path. Nothing was pushed; the owner reviews and merges `fix/<slug>`.
 | Loop | Cap |
 |---|---|
 | Agents at once | 5 |
-| Agents per workflow | 15 standard, 20 deep (hyperresearch included) |
+| Agents per workflow | 16 standard (15 plus the contrarian finder), 20 deep (hyperresearch included) |
 | Fix stage agents | 3 per finding per round (fixer, reviewer, adjudicator), 5 findings, 3 rounds |
 | Gap rounds | 1 |
 | Anchor narrowing cycles | 3 |

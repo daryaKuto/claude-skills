@@ -20,7 +20,7 @@ Skip the finding-generation pass itself, hunting or brainstorming: a search, not
 ## The pattern
 1. State the claim: what is broken, where (file:line), and what would make it matter.
 2. List the conditions that must all hold, each checkable alone: trigger reachable, bad state possible, nothing blocking it, and it matters.
-3. Check each condition alone. Record evidence: a file:line or a command's output. Do not skip one because earlier ones passed.
+3. Check each condition alone. Each condition goes to its own Sonnet worker, never the agent that produced the finding, under proofread's proof rules. Record evidence: a file:line or a command's output. Do not skip one because earlier ones passed.
 4. Ask before the verdict: proof, or a pattern that looks wrong? A dismissal needs proof equal to a confirmation's.
 5. Combine: CONFIRMED if every condition passed, REJECTED if any failed, UNVERIFIED if one could not be checked. Never round UNVERIFIED up to a pass.
 6. Also check the two claims people forget, even on a careful review:

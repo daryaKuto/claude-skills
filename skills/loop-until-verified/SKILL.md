@@ -27,7 +27,8 @@ Do NOT use for a one-shot task, or a call a human reviews right after. This does
 5. **Add an optional steering file.** Read it once per iteration, splice it in, then clear it. Never block on it.
 6. **On retry**: name the run, check the tree for leftover changes, require an explicit keep-or-discard decision. A cancelled retry is its own outcome, not an error. Skip only for a genuinely idempotent call (same result whether run once or twice, no stacking side effect).
 7. **After a pass, run held-back cases** the loop never saw, graded the same way. A failure returns to step 3.
-8. **Stop condition:** every gate passes, including held-back cases, or the cap is hit. At the cap, escalate with what fails. Never raise the cap mid-run.
+8. **An iteration whose agent errored, timed out or returned nothing** counts toward the iteration cap and is never read as a pass.
+9. **Stop condition:** every gate passes, including held-back cases, or the cap is hit. At the cap, escalate with what fails. Never raise the cap mid-run.
 
 ## Quick reference
 
@@ -55,4 +56,4 @@ Do NOT use for a one-shot task, or a call a human reviews right after. This does
 - https://github.com/Th0rgal/open-ralph-wiggum, commit `7559f267b227d74d82776048697615536c2a6b2a`, MIT. Files: `ralph.ts`, `completion.ts` (`tasksMarkdownAllComplete`, `checkTerminalPromise`, `containsPromiseTag`). Adapted: parser-veto (step 2) and read-inject-clear steering (step 5), generalized beyond this repo's file names.
 - https://github.com/alirezarezvani/claude-skills, commit `19392f7a08264ed00486a251f5b2098321771f94`, MIT. File: `agent-launcher/skills/grade-iterate/SKILL.md`. Adapted: the held-back-case check after a pass (step 7).
 - https://github.com/BloopAI/vibe-kanban, commit `d5cbb5380fa0b32e98ef9b8d987f63decce4be3a`, Apache-2.0. File: `packages/web-core/src/shared/hooks/useRetryProcess.ts`. Adapted: confirm-then-retry with keep-or-discard and a non-error cancel (step 6).
-- The iteration-cap-plus-cost/time-cap pairing (steps 1, 8; the open-ralph-wiggum draft above used a floor with no ceiling) and the santa-method/verification-loop cross-references are this skill's own additions.
+- The iteration-cap-plus-cost/time-cap pairing (steps 1, 9; the open-ralph-wiggum draft above used a floor with no ceiling) and the santa-method/verification-loop cross-references are this skill's own additions.
