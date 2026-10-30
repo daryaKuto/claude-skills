@@ -24,7 +24,14 @@ person: an intern who can code but does not know this project.
 
 ## Rules for every run
 
-- Workers are Sonnet, at most 5 running at once, about 15 tool calls each. Adjudicators are
+- Workers are Sonnet, at most 5 running at once, with a hard tool-call cap per role: finders 12,
+  gap finders 10, refuters 10, blind refuters 8, gap critic 4. Each call re-reads the agent's
+  whole context (about 80k tokens), so calls drive the cost. An agent at its cap returns what it
+  has and lists the rest as skipped or UNVERIFIED.
+  The result carries `calls` (each agent's reported tool calls): read it after the run, and if
+  agents keep hitting their cap, the sub-questions are too broad. If a standard run has more
+  than about 20 findings, the budget runs out at the lowest-severity blind checks (listed in
+  `notRun`); raise `maxAgents` rather than accept them as UNVERIFIED for a high-stakes question. Adjudicators are
   Opus. These come from the global CLAUDE.md; this skill does not relax them.
 - A dead or errored agent is "not run", never "nothing found". The workflow retries once and
   reports the rest.
@@ -49,6 +56,10 @@ Kind:
 Size:
 - **quick**: one fact the orchestrator can look up in a few calls. Answer directly, no
   workflow, and say so.
+- **small**: a narrow question that needs checking but not a full run (one system, 1 or 2
+  sub-questions). Pass `size: 'small'`: 8 agents, no contrarian finder, no gap round, same
+  refuters. It has less room for retries, so a run with several dead agents ends with more
+  UNVERIFIED items. If you cannot tell small from standard, ask the owner.
 - **standard** (default): 3 or 4 sub-questions, agent budget 16 (15 plus the contrarian finder) for the find-and-verify
   workflow, about 5 to 15 minutes.
 - **deep**: only when the owner says "deep research". Agent budget 20 for research and
@@ -100,9 +111,10 @@ verify-only run pass `findings: [{id, claim, evidence, method, severity, locatio
    finder per run (not per sub-question; pass `contrarian: false` to skip). It argues the
    opposite of the most likely answer and looks for evidence for it. It counts toward the 5
    at once and the agent budget.
-2. **Gap**: one completeness critic, then one gap round of at most 3 sub-questions. Never a
-   second round.
-3. **Verify**: most severe first, Sonnet refuters take findings in groups of 3, load
+2. **Gap**: one completeness critic, then one gap round of at most 2 sub-questions, only for a
+   gap the critic can name as a specific missing fact that could change an answer. Never a
+   second round. Skipped in a small run.
+3. **Verify**: most severe first, Sonnet refuters take findings in groups of 5 (they get the finder's evidence), load
    `verify-findings` and must use a different method from the finder. Medium, high and critical
    findings also go to a blind refuter that sees only the claim and its location.
 4. **Adjudicate**: one Opus agent, with the last budget slot reserved for it, merges into
