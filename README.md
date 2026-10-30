@@ -22,8 +22,24 @@ in one project only, copy it to that project's `.claude/skills/` instead.
 
 The `CLAUDE.md` here is my global steering file. Do not copy it over yours blindly. Read it,
 keep the rules you agree with, and edit the "Who I am" section. It goes in `~/.claude/CLAUDE.md`.
-`pstack-models.md` is the model settings file it imports for the pstack plugin. Copy it to
-`~/.claude/pstack-models.md`, or delete the last line of `CLAUDE.md` if you do not use pstack.
+
+### Recommended: install pstack
+
+I recommend installing pstack alongside these skills. `plan-and-build`, `review-all` and
+`investigate` use its architect, TDD and review skills for their design, test and review
+steps, and my `CLAUDE.md` routes build work through its `poteto-mode`. pstack is
+[Lauren Tan's skill stack](https://github.com/cursor/plugins/tree/main/pstack), ported to
+Claude Code by [michael-denyer/pstack-claude](https://github.com/michael-denyer/pstack-claude)
+(MIT). Install it from inside Claude Code:
+
+```
+/plugin marketplace add michael-denyer/pstack-claude
+/plugin install pstack@pstack-claude
+```
+
+Then copy `pstack-models.md` to `~/.claude/pstack-models.md`. It is the model settings file
+my `CLAUDE.md` imports: it runs pstack's workers on Sonnet and its judges on Opus. If you skip
+pstack, delete the last line of `CLAUDE.md`.
 
 Several skills build on other people's skills. Install those too (see
 [Skills these depend on](#skills-these-depend-on)), or the skills still run but skip the steps
@@ -163,7 +179,7 @@ want from their authors.
 | Pack | Used for | Where to get it |
 | --- | --- | --- |
 | superpowers (Jesse Vincent) | `superpowers:systematic-debugging`, `superpowers:brainstorming` | [obra/superpowers](https://github.com/obra/superpowers), or the `superpowers` plugin in `/plugin` (claude-plugins-official) |
-| pstack | `pstack:architect`, `pstack:tdd`, `pstack:interrogate`, `pstack:blast-radius`, `pstack:thermo-nuclear-code-quality-review`, `pstack:how`, `pstack:deslop`, `pstack:poteto-mode`, `pstack:comment-sicko`, `pstack:no-comments`, the `pstack:effort-*` agents, `pstack:principle-subtract-before-you-add`, `pstack:typescript-best-practices` | [michael-denyer/pstack-claude](https://github.com/michael-denyer/pstack-claude) |
+| pstack | `pstack:architect`, `pstack:tdd`, `pstack:interrogate`, `pstack:blast-radius`, `pstack:thermo-nuclear-code-quality-review`, `pstack:how`, `pstack:deslop`, `pstack:poteto-mode`, `pstack:comment-sicko`, `pstack:no-comments`, the `pstack:effort-*` agents, `pstack:principle-subtract-before-you-add`, `pstack:typescript-best-practices` | [michael-denyer/pstack-claude](https://github.com/michael-denyer/pstack-claude), recommended (see [Install](#recommended-install-pstack)) |
 | ponytail | `ponytail:ponytail-review` (in `review-all`) | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) |
 | hyperresearch | external research in `investigate`, `claim-verification-loop`, `code-council` | [jordan-gibbs/hyperresearch](https://github.com/jordan-gibbs/hyperresearch) |
 | Everything Claude Code | `security-review`, `verification-loop`, `iterative-retrieval`, `loop-design-check`, `santa-method`, `frontend-a11y`, `postgres-patterns`, `make-interfaces-feel-better` (suggested by `plan-and-build`'s register) | [affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code) |
