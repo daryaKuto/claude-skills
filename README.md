@@ -32,7 +32,7 @@ that call them.
 ## Which skill when
 
 You rarely need to name a skill. Describe the job and Claude picks one. The table maps the
-kind of thing you would say to the skill that handles it. The same map is in `CLAUDE.md`, so
+kind of thing you would say to the skill that handles it. A similar map is in `CLAUDE.md`, so
 Claude follows it too.
 
 | You want to... | Say something like | Skill |
@@ -163,7 +163,7 @@ want from their authors.
 | Pack | Used for | Where to get it |
 | --- | --- | --- |
 | superpowers (Jesse Vincent) | `superpowers:systematic-debugging`, `superpowers:brainstorming` | [obra/superpowers](https://github.com/obra/superpowers), or the `superpowers` plugin in `/plugin` (claude-plugins-official) |
-| pstack | `pstack:architect`, `pstack:tdd`, `pstack:interrogate`, `pstack:blast-radius`, `pstack:thermo-nuclear-code-quality-review`, `pstack:how`, `pstack:deslop`, `pstack:poteto-mode`, `pstack:principle-subtract-before-you-add`, `pstack:typescript-best-practices` | [michael-denyer/pstack-claude](https://github.com/michael-denyer/pstack-claude) |
+| pstack | `pstack:architect`, `pstack:tdd`, `pstack:interrogate`, `pstack:blast-radius`, `pstack:thermo-nuclear-code-quality-review`, `pstack:how`, `pstack:deslop`, `pstack:poteto-mode`, `pstack:comment-sicko`, `pstack:no-comments`, the `pstack:effort-*` agents, `pstack:principle-subtract-before-you-add`, `pstack:typescript-best-practices` | [michael-denyer/pstack-claude](https://github.com/michael-denyer/pstack-claude) |
 | ponytail | `ponytail:ponytail-review` (in `review-all`) | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) |
 | hyperresearch | external research in `investigate`, `claim-verification-loop`, `code-council` | [jordan-gibbs/hyperresearch](https://github.com/jordan-gibbs/hyperresearch) |
 | Everything Claude Code | `security-review`, `verification-loop`, `iterative-retrieval`, `loop-design-check`, `santa-method`, `frontend-a11y`, `postgres-patterns`, `make-interfaces-feel-better` (suggested by `plan-and-build`'s register) | [affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code) |
@@ -175,8 +175,8 @@ your opt-in (say "use a workflow").
 
 ## Credits
 
-Several skills started from other people's work. Each `SKILL.md` has a "Source" section with
-the repo, the commit read and the license; that is the full list. In short:
+Several skills started from other people's work. Each skill built on someone else's work has a "Source"
+section in its `SKILL.md` with the repo, the commit read and the license; that is the full list. In short:
 
 | Skill | Built on |
 | --- | --- |

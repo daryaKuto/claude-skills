@@ -53,8 +53,8 @@ Reference files in this folder: `worker-rules.md`, `reviewer-rules.md`,
 - **IDs are keys, not names** (owner rule 2026-10-22). They stay in log lines, file and
   branch names, and the first column of a table. Everywhere a person reads (`design.md`,
   `plan.md`, `register.md` prose, reports, PR text, the central plans page), name the thing
-  by what it is. A decision's title is what was decided ("Mirror the repo with a
-  fine-grained token"), not its topic ("Mirror credential"). Cite it by that title, never
+  by what it is. A decision's title is what was decided ("Store sessions in
+  Postgres, not Redis"), not its topic ("Session store"). Cite it by that title, never
   by id alone, and never as a range ("R-D98 to R-D102" means nothing to an outside dev;
   list the decisions by title). An id may follow a title in brackets when a reader must
   find the row; it never replaces it. Check before saving any of those files:
@@ -89,7 +89,7 @@ and asks the owner (grilling format); it is never planned in silently.
    `release.md` names the rehearsal line for each step, or says "not rehearsed: owner
    approves" for steps that cannot be rehearsed (secrets, dashboard settings).
    After the owner merges `plan/<slug>` into the default branch, **agents run the runbook**
-   ("Mode: release", owner option A, 2026-10-12). A rehearsed step whose file or function is
+   ("Mode: release", owner rule, 2026-10-12). A rehearsed step whose file or function is
    unchanged runs without a prompt: the project's hooks check the hash and that the plan's
    final PR is merged. An unrehearsed or edited step asks the owner. Nothing reaches
    production before that merge.
@@ -109,8 +109,8 @@ The global CLAUDE.md applies in full. This adds what is specific here.
   loads poteto-mode, whose playbooks open PRs and spawn agents. Every dispatch is one line:
   "Read `<rules file>`, then `<brief path>`." Workers get `worker-rules.md`, reviewers get
   `reviewer-rules.md`.
-- **Adjudicators** run on Opus as `~/.claude/pstack-models.md` sets: pstack's architect
-  cross-judge, how explainer, why synthesizer and "judgment" roles, plus the merge step of
+- **Adjudicators** run on Opus as `~/.claude/pstack-models.md` sets: pstack's arena
+  cross-judge pool, how explainer, why synthesizer and "judgment" roles, plus the merge step of
   `/review-all`, and the adjudicator of every pre-existing bug fix. Reviewers are not
   adjudicators; they stay on Sonnet.
 - **Every review is a Workflow, never one reviewer agent** (owner rule 2026-10-25). This
@@ -149,6 +149,7 @@ The global CLAUDE.md applies in full. This adds what is specific here.
 | `design.md` | Existing code (from `pstack:how`), problem, goal, the architect sketch (usage, types, signatures), rationale, out of scope, and the design interrogation answers. |
 | `plan.md` | Commands, global constraints, review focus, then chunks, features and tasks. |
 | `register.md` | Decisions, and per task the steps and skills to run. Built from `register-template.md`. |
+| `amendments.md` | Optional. Owner changes made after plan mode; wins over `plan.md` where they conflict. |
 | `progress.md` | The run log. Every state change is one line, so a restarted run resumes from it. |
 | `briefs/`, `reports/`, `diffs/` | Every brief sent, every report and review written, every diff reviewed. |
 
@@ -270,7 +271,7 @@ fact answer has a "How we know", every choice is a register decision, and the pl
    short sketch in `design.md` yourself) and the reviewer agent in step 8. The small path still
    runs step 6 (design interrogation); its answers can be short, never skipped.
 4. **Design.** Run `pstack:architect` Phases A and B only, using the "Existing code" section
-   as Phase A's grounding and exactly the runners on the sheet's `architect runners` line.
+   as Phase A's grounding and exactly the runners on the `architect runners` line of `~/.claude/pstack-models.md`.
    Stop at the synthesized sketch: Phases C, D and E write code. Save it to `design.md`.
 5. **Plan.** Write `plan.md`:
    - **Commands:** typecheck, lint, test, and the command that starts the test stack (local
@@ -309,8 +310,8 @@ fact answer has a "How we know", every choice is a register decision, and the pl
    CLAUDE.md says. Record a summary, not a copy: what
    the plan does and why, its status, one line per chunk and task, each decision with its
    chosen option and a one-line why. No code, logs or progress history, and no internal ids
-   (T3, C2, M15, D12) in the prose: say what each thing is. The full detail stays in the
-   plan folder (owner rule 2026-10-19: the page had grown to 5 MB of ids and logs). If the project names none, ask the
+   (T3, C2, F1, D12) in the prose: say what each thing is. The full detail stays in the
+   plan folder (owner rule 2026-10-19). If the project names none, ask the
    user which page is the central one before publishing anything. Read it back, then write
    its link into `register.md`. If publishing fails, say so and go on; the files are the
    source of truth. Tell the user, in plain words:
@@ -448,12 +449,14 @@ Log `F<n> BASE=<HEAD sha>` unless the line exists. Then each task, one at a time
 goes to the Pre-existing bug flow with scope F<n>, never to a fix worker or Postponed.
 
 1. **Comment pass** (pstack's `no-comments`, split so no worker spawns an agent):
-   1. Dispatch `subagent_type: "pstack:comment-sicko"`, `model: "sonnet"`, with: "Scope:
+   1. Dispatch `subagent_type: "pstack:comment-sicko"` (if pstack is not installed, a
+      `general-purpose` agent with the same brief and the rule "delete comments that only
+      restate the code; keep ones that explain why"), `model: "sonnet"`, with: "Scope:
       `git diff <F<n> BASE>..HEAD`. Do not run /how or /why; when unsure, keep the comment and
       list it as a skip." Its edits stay uncommitted. Log `F<n> comments edited`.
    2. A review Workflow audits the uncommitted diff (review `reports/F<n>-comments.md`) and
       runs typecheck and lint. It lists: code or out-of-scope edits to revert, comments to
-      restore (about something we cannot change), and accepted `MUST KILL` flags. A deleted
+      restore (about something we cannot change), and accepted `MUST KILL` flags (comments the pass marked for deletion). A deleted
       comment that warned about a trap in our own code is restored unless a flag fix removes
       that trap. This overrides `no-comments`, because the global CLAUDE.md never lets a trap
       comment disappear while the trap is still there.

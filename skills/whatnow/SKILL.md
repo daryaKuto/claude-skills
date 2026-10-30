@@ -34,7 +34,7 @@ it was done. Read only; change nothing, start nothing.
    Why this way: no built-in screen gives this list to a skill (`/tasks` and `/workflows`
    are for the owner's eyes), and the transcript rules above come from claude-hud
    `src/transcript.ts` and a checked run of this session's own transcript (research
-   2026-10-18, `~/plans/2026-10-18-research-whatnow-prior-art/report.md`).
+   2026-10-18; claude-hud is github.com/jarrodwatts/claude-hud).
 3. **The plan, if there is one:** the plan folder given in the args, otherwise the one this
    session worked in (plan-and-build: `progress.md`, `plan.md`, `register.md`; a skill plan
    in `~/plans/`; a research folder's `report.md`). Run

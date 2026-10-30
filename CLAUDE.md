@@ -285,7 +285,7 @@ A pasted "Next:" line, a TODO, or a plan step is not a go-ahead.
   grep them for the plan's name, number, file path and decision ids. Each
   living artifact that mentions it is updated in the same change (re-render it
   if it is built from a source file, otherwise edit and republish), then read
-  back to confirm. Dated run registers ("Plan 3 Verification Register") are
+  back to confirm. Dated run registers ("Verification Register for plan X") are
   snapshots: never edit them. The project's CLAUDE.md lists its living ones.
   Why: the owner reads the artifacts, not the repo; a stale page is a wrong page.
 
@@ -334,7 +334,7 @@ verify, report the change as UNVERIFIED and the task as not done.
   `main`, and nothing reaches production during the build. I merge `plan/<slug>`
   once at the end. Why: an early "small PR into main" and per-chunk deploys kept
   pulling me into the build.
-  Rehearsed release (2026-10-12, option A): after my merge, `/plan-and-build release`
+  Rehearsed release (2026-10-12): after my merge, `/plan-and-build release`
   may apply a SQL file or deploy a function without asking only if `rehearsal.py`
   logged it passing on the rehearsal branch with the same contents. Anything
   unrehearsed or edited since, secrets, and every other production change still

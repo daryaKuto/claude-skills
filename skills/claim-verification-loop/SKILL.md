@@ -66,7 +66,7 @@ calls, one snapshot instead of every agent querying live, settled claims carried
 |---|---|---|
 | **Starting an agent**: its first call writes ~42k tokens to cache (~80k if the system prompt is not cached yet) | 50k to 100k weight per agent, before it does anything | **Fewer agents is the biggest lever.** Readers cost 82k to 137k weight each, and most of that was entry cost |
 | **Each tool call** re-reads the agent's whole context | ~5k to 8k weight per call | Batch reads; stop when every claim has a verdict |
-| **The snapshot verifier** (20 calls in that run) | 335k weight, 37% of the run | Cap it at ~8 calls, batch its spot checks, skip it when a fresh valid VERDICT.json exists |
+| **The snapshot verifier** (20 calls in that run) | 335k weight, 37% of the run | Cap it at ~8 calls, batch its spot checks |
 | Output tokens | ~1% | Not worth optimising |
 | Shared brief prefix across agents | 0 reuse measured | Do not count on the prompt cache between agents |
 
@@ -201,7 +201,7 @@ stay in the scratchpad: never commit them.
 There is no budget profile (removed 2026-09-26, owner: "I'd rather waste tokens than be
 wrong"). Every run: 14-call readers that may take 6 more, a fresh snapshot check, an adversary
 on every lane, and the orchestrator re-checks every REFUTED and PARTLY verdict itself.
-Approximate weight for 5 lanes: ~1.6M (5 readers + 5 adversaries + verifier).
+Approximate weight for 5 lanes: ~1.8M (5 readers + 5 adversaries + verifier).
 
 ## Phase 2: fan out
 

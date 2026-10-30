@@ -43,7 +43,7 @@ One profile only (owner rule 2026-09-26): **spend tokens rather than be wrong.**
 14-call reviewers, 12-call refuters that may take 6 more calls rather than guess, and a second
 blind refuter on every high or critical finding. Cost is cut only where it buys no accuracy.
 
-Measured on a real workflow (2026-09-25, see `claim-verification-loop`, "Token budget"):
+Measured on a real workflow (2026-09-25, see `claim-verification-loop`, "Accuracy first, then token cost"):
 starting an agent costs 50k to 100k weight before it does anything; each tool call adds 5k
 to 15k; output is about 1%; the prompt cache does not carry a shared prefix between agents.
 So the council spends on independence and on checking, and cuts only these:
