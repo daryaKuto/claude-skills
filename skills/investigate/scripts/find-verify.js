@@ -1,7 +1,7 @@
 export const meta = {
   name: 'investigate-find-verify',
   description: 'Fan out finders over sub-questions, then try to disprove every finding, then one Opus adjudicator merges',
-  whenToUse: 'Called by the investigate skill. args: {question, kind, anchorPath, outDir, maxAgents, size: 'small'?, contrarian: false?, subquestions: [{id, prompt}]} for a full run, or {..., findings: [{id, claim, evidence, method, severity, location}]} (non-empty) to verify only.',
+  whenToUse: 'Called by the investigate skill. args: {question, kind, anchorPath, outDir, maxAgents, size: "small"?, contrarian: false?, subquestions: [{id, prompt}]} for a full run, or {..., findings: [{id, claim, evidence, method, severity, location}]} (non-empty) to verify only.',
   phases: [
     { title: 'Find', detail: 'one Sonnet finder per sub-question plus one contrarian finder, at most 5 at once' },
     { title: 'Gap', detail: 'one completeness critic, then at most one gap round (skipped when size is small)' },
