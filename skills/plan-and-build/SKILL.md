@@ -38,6 +38,25 @@ person: an intern who can code but does not know this project.
 This skill replaces poteto-mode's routing for the run. pstack and ponytail skills run only
 where this file or the register says.
 
+**Lean code (ponytail's promises, each checked, not only asked for).** Ponytail trims code,
+never verification: tests, held-back checks, reviews, validation, error handling, security and
+accessibility always run and are never cut. When the two pull apart, this file wins.
+
+| Promise | Where it is enforced |
+|---|---|
+| Read first: list every place the change must reach | Worker report `SCOPE` (worker-rules); the reviewer checks the diff reaches all of it and nothing else |
+| Reuse before writing: existing code, then the standard library, then an installed dependency, then new code | Plan step 5 gives each task a `Reuse` line; worker report `LADDER`; a new helper, wrapper, dependency or pattern where one exists is a high review finding |
+| Build only what the spec asks | Reviewer checks the spec both ways: every item done, and anything not asked for is a "not in spec" finding |
+| Shortest working diff | Plan step 5 gives each task a `Size` estimate; a diff over twice its estimate needs a stated reason, or it is a "bloat" finding |
+| Risky logic leaves a test (a branch, loop, parser, money, security) | Worker report `RISKY`; a risky unit without a test that fails without it is a high finding |
+| Never cut validation, error handling, security, accessibility | Reviewer: any such deletion is a high finding; `pstack:deslop` keeps its "never remove" rule |
+| Every shortcut is named and tracked | `shortcut:` comments; the chunk's `ponytail:ponytail-debt` ledger turns each into an open question (go mode, step 3) |
+| Every report names what was skipped and the risks | Worker report `SKIPPED`; the orchestrator logs each risk in progress.md |
+| Senior review and whole-repo audit | `ponytail:ponytail-review` in every chunk review (the `/review-all` angles); `ponytail:ponytail-audit` on the plan branch in End |
+| Measured, not claimed | A `C<n> lean` metrics line per chunk and an `END-LEAN` total (go mode, step 3 and End) |
+
+Workers write each change under `ponytail:ponytail` at level full (the routing guide's frame).
+
 Reference files in this folder: `worker-rules.md`, `reviewer-rules.md`,
 `register-template.md`.
 
@@ -304,8 +323,11 @@ fact answer has a "How we know", every choice is a register decision, and the pl
      is wrong; fix the plan, or stop and ask the owner.
    - **Tasks**, each with `Files` (create, modify, test), `Interfaces` (Consumes and Produces
      with exact signatures, or a pointer into design.md), `Tests` (cases against real
-     dependencies), and `Done when` (exact command and expected output). Write every task in
-     full; no "same as T3".
+     dependencies), `Done when` (exact command and expected output), `Reuse` (the existing
+     helpers, components, patterns or installed dependencies the task must use, each with
+     `file:line`, found by grep; "none found, searched for <terms>" when there are none) and
+     `Size` (estimated insertions plus deletions, tests included; a budget for review, never a
+     reason to drop a test). Write every task in full; no "same as T3".
 6. **Interrogate the design.** Run "Design interrogation" (above) on `design.md` and
    `plan.md`, and write its answers into `design.md`. Every question it leaves as a choice
    becomes a decision row in step 7.
@@ -316,7 +338,9 @@ fact answer has a "How we know", every choice is a register decision, and the pl
    routing row per task, with numbered steps built from the routing guide.
 8. **Review the plan.** A review Workflow (brief: `briefs/plan-review.md`, review:
    `reports/plan-review-<k>.md`) checks completeness against the request, design alignment,
-   chunk and task size, buildability, commands, a routing row per task, and the design
+   chunk and task size, buildability, commands, a routing row per task, a `Reuse` line per
+   task whose `file:line` items exist (and no task builds what an existing one does), a `Size`
+   per task, nothing in a task the goal does not need, and the design
    interrogation: every subject answered all seven questions, every fact answer cites how we
    know, and no answer is vague ("handled", "should be fine", "TBD"). Fix blockers and
    re-review once. Cap: 3 rounds, then list what is left for the user.
@@ -369,14 +393,62 @@ fact answer has a "How we know", every choice is a register decision, and the pl
 
 ### For each chunk C<n>
 
+0. **Clear old checkouts before any new branch, worktree or chunk** (owner rule 2026-11-03).
+   Why: 38 throwaway deploy checkouts and 64 chunk worktrees (about 0.76 GB each) filled the
+   disk and stopped the build. Run `git worktree list`, `ls -d ~/<project>-deploy-* 2>/dev/null`
+   (or the project's named throwaway checkout pattern) and `git branch --list 'plan/<slug>-*'`, then:
+   - A worktree or checkout whose branch is merged (its PR merged, or a detached tip-check or
+     deploy checkout whose step is logged done) and whose `git status --short` shows nothing
+     but `node_modules`, `cdk.out` or other build output: remove it with
+     `git worktree remove --force <path>`, then `git worktree prune`.
+   - A local chunk branch whose PR is merged: `git branch -D <branch>` (the remote keeps it).
+   - Anything dirty (tracked changes or untracked files that are not build output), or tied
+     to an open PR, a running agent or the step in progress: keep it, and log it as `KEPT
+     <path> <reason>`. Never delete uncommitted work; ask the owner about it.
+   - Then `df -h` on the repo's volume: under 20 GB free, stop and tell the owner before
+     building.
+   - Look for hidden leftovers the folder checks miss: `lsof -nP +L1` (deleted files still held
+     open; any over 1 GB is a runaway writer, stop its process group) and processes this build
+     started that outlived their run (`ps -axo pid,ppid,lstart,command` for `postgres -D
+     /tmp/aurora-t-*`, `cat`, `tee`, `vitest` with PPID 1; stop test Postgres with
+     `pg_ctl -D <dir> stop -m fast`). Log them in the CLEANUP line. Why: a self-fed `cat`
+     wrote 125 GB into a deleted file and 9 test Postgres servers were left running (2026-11-03).
+   Log `CLEANUP removed=<n> kept=<n> free=<GB>`. Every step that makes a throwaway checkout
+   (tip check, dev deploy, adjudicator) also removes it when the step's result is logged.
+   This rule is the owner's standing yes to delete these build leftovers; the global
+   "never delete what you did not create" stop still applies to everything else.
 1. `git switch plan/<slug> && git pull --ff-only`, then switch to `plan/<slug>-c<n>` if
    `git rev-parse --verify --quiet refs/heads/plan/<slug>-c<n>` finds it, else create it with
    `git switch -c`. Any git error stops the run; never hide it.
    Log `C<n> BASE=<HEAD sha>` unless the line exists.
 2. Build each feature in the chunk (below).
-3. **Deep review.** Run the chunk review as a Workflow (Roles, "Every review is a Workflow"),
-   covering the `/review-all` angles; `/review-all branch <C<n> BASE> caller: plan-and-build`
-   is the same review when its skills run as workflow lenses. Copy its
+3. **Debt ledger, then deep review.** First run `ponytail:ponytail-debt` on the chunk's
+   changed files and save it to `reports/C<n>-debt.md`. Each `shortcut:` comment the chunk
+   added is a deferral: it becomes an open question in the register (`Owner answer: pending`,
+   with its ceiling and upgrade path) unless the plan already accepted it. A `no-trigger` row
+   (a `shortcut:` comment without its upgrade condition) is a medium finding. Copy every
+   worker report's `SKIPPED` risks into progress.md as `C<n> risk <task> <one line>`. Log
+   `C<n> debt <count>` and the chunk's lean metrics:
+   `C<n> lean changed=<n> est=<n> newdeps=<n> reuse=<x>/<y> risky-tested=<x>/<y> shortcuts=<n>`.
+   - `changed`: insertions plus deletions from `git diff --shortstat <C<n> BASE> -- .
+     ':!<lockfile>' ':!<generated paths>'` (measured). `est`: the sum of the chunk's task
+     `Size` values.
+   - `newdeps`: dependencies added in the lockfile diff (measured).
+   - `reuse`: a unit is one `LADDER` line in the worker reports; x = lines on rungs 2 to 4,
+     y = all lines (worker-reported, spot-checked against the diff). 0/0 is logged as `-`.
+     No threshold: it is read with the deep review's Duplication findings, not on its own.
+   - `risky-tested`: a unit is one `RISKY` line; x = those for which the task reviewer named a
+     test and the assertion that fails without it (reviewer-attested), y = all lines. 0/0
+     counts as 100%.
+   - `shortcuts`: `shortcut:` markers on lines the chunk added (`git diff <C<n> BASE> | grep
+     -c '^+.*shortcut:'`, measured). ponytail-debt reads whole files, so its count also
+     includes older markers in touched files.
+   `changed` over twice `est` with no reason in a report, any `newdeps` the plan did not name,
+   or `risky-tested` below 100% is a finding for the deep review. A fix for a bloat finding
+   never deletes a test, check, validation or error handling. Then run the chunk review as a
+   Workflow (Roles, "Every review is a Workflow"), covering the `/review-all` angles with
+   `ponytail:ponytail-review` as a named lens; `/review-all branch <C<n> BASE> caller:
+   plan-and-build` is the same review when its skills run as workflow lenses. Copy its
    report to `reports/C<n>-review.md` and log `C<n> review <verdict> open=<count of critical
    and high, not counting `pre-existing`>`. `pre-existing` findings go to the Pre-existing bug
    flow with scope C<n>, before this step's fix worker. `/review-all` does not apply
@@ -510,7 +582,9 @@ goes to the Pre-existing bug flow with scope F<n>, never to a fix worker or Post
       `general-purpose` agent with the same brief and the rule "delete comments that only
       restate the code; keep ones that explain why"), `model: "sonnet"`, with: "Scope:
       `git diff <F<n> BASE>..HEAD`. Do not run /how or /why; when unsure, keep the comment and
-      list it as a skip." Its edits stay uncommitted. Log `F<n> comments edited`.
+      list it as a skip. Never remove a `shortcut:` comment: the chunk's debt ledger reads it."
+      The audit in step 2 restores any `shortcut:` comment that was removed while its shortcut
+      is still in the code. Its edits stay uncommitted. Log `F<n> comments edited`.
    2. A review Workflow audits the uncommitted diff (review `reports/F<n>-comments.md`) and
       runs typecheck and lint. It lists: code or out-of-scope edits to revert, comments to
       restore (about something we cannot change), and accepted `MUST KILL` flags (comments the pass marked for deletion). A deleted
@@ -647,7 +721,14 @@ a section that has nothing in it.
 
 1. When every chunk is merged: run the held-back checks from the `HELD-BACK` line (log
    `HELD-BACK result <pass|fail per check>`; a fail re-opens the chunk that owns that goal, or ask the owner if none does, with
-   step 3's fix rules). Then run `/review-all branch` (interactive) on `plan/<slug>`
+   step 3's fix rules). Then run `ponytail:ponytail-audit` as one Sonnet lens of a review
+   Workflow ("Every review is a Workflow"), scoped to the files `plan/<slug>` changed; its
+   critical and high findings (duplication across chunks, dead code, bloat, missing tests) go
+   through the fix-round phases, read-only refuters first. Log `END-LEAN changed=<n> est=<n>
+   newdeps=<n> reuse=<x>/<y> risky-tested=<x>/<y> shortcuts-open=<n>`: each field is the sum
+   over the `C<n> lean` lines plus the PM and S-bug fix diffs (measured the same way), and
+   `shortcuts-open` is the count of shortcut rows still `Owner answer: pending` in the
+   register. Then run `/review-all branch` (interactive) on `plan/<slug>`
    against the default branch, to catch problems between chunks. Log a plan-total cost line
    the same way as a chunk's: `END-COST agents=<n> errored=<n> tokens=<n or unknown>`.
 2. Open the PR with `gh pr create --base <default> --head plan/<slug>` (or reuse it, found

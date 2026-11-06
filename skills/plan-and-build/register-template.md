@@ -56,9 +56,12 @@ Findings below "high" and shortcuts, to fix later.
 
 ## Routing guide: task type to steps
 
-Build each row's steps from these. Every row starts with "Read the files in the brief" and
-ends with "Run Done when, typecheck, lint", then "`pstack:deslop` on your commit range (never
-remove validation or error handling)", then "Commit and report".
+Build each row's steps from these. Every row starts with "Read the files in the brief", then
+"`ponytail:ponytail` (full) for the change itself: the least new code that fully solves the
+task. Mark any deliberate deferral with a `shortcut:` comment naming its ceiling and upgrade
+path, and list each one in your report. Ponytail never skips a test, a check, validation or
+error handling; this row decides the tests, and `SKIPPED` goes in the report file". Every row ends with "Run Done when, typecheck, lint", then "`pstack:deslop`
+on your commit range (never remove validation or error handling)", then "Commit and report".
 
 | Task type | Steps in the middle |
 |---|---|
@@ -71,9 +74,11 @@ remove validation or error handling)", then "Commit and report".
 | Auth, sessions, permissions, secrets, user input | `security-review` |
 | UI component or screen | `frontend-a11y`, then `make-interfaces-feel-better` |
 | TypeScript files | `pstack:typescript-best-practices` (its mock advice is overridden by worker rules) |
+| Adds or upgrades a dependency | `ponytail:ponytail` decides first whether the standard library or existing code already covers it. A new dependency is a design choice: report NEEDS_CONTEXT unless the plan named it |
 | Contested design inside the task | Report NEEDS_CONTEXT. The orchestrator takes it to the user |
 | Docs, comments, PR text | `unslop` |
 
 Fix briefs (task fix rounds, feature fixes, chunk fixes) reuse the task's row, or for
-feature and chunk fixes: "Read the brief, `pstack:tdd` if behaviour changes, least code,
-checks, `pstack:deslop`, commit and report".
+feature and chunk fixes: "Read the brief, `pstack:tdd` if behaviour changes, least code
+under `ponytail:ponytail` (a bloat fix never deletes a test, check, validation or error
+handling), checks, `pstack:deslop`, commit and report".

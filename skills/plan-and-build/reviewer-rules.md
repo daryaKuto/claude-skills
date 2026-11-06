@@ -8,6 +8,28 @@ Read this file first, then your brief. You review work someone else did.
 - Run "Done when", typecheck and lint yourself. Never trust the implementer's report for them.
 - Spec items: pass, fail, or unsure. Unsure counts as fail unless you ran a command whose
   output shows it passes.
+- Lean checks (ponytail's promises), on every task and fix diff:
+  - **Not in spec:** anything the diff adds that the task did not ask for (a feature, option,
+    config, abstraction, wrapper or "for later" code) is a medium finding.
+  - **Duplication:** a new helper, component, wrapper, dependency, error shape or naming style
+    where an existing one fits (grep for it) is a high finding, with the existing one's
+    `file:line`. Check the task's `Reuse` items were used.
+  - **Bloat:** compare insertions plus deletions of the task diff (`git diff --shortstat`,
+    lockfile and generated files excluded) with the task's `Size`. Over twice the estimate with
+    no reason in the report is a medium finding; name the lines that can go. Tests, checks,
+    validation and error handling are never "lines that can go".
+  - **Dependencies:** any lockfile change that adds a dependency the plan did not name is a
+    high finding.
+  - **Shortcuts:** each `shortcut:` comment must read `shortcut: <limit>, <when to upgrade>`;
+    one without the upgrade condition is a medium finding. A deleted `shortcut:` comment is a
+    high finding unless the shortcut itself was removed.
+  - **Scope:** the diff must reach every place in the worker's `SCOPE` (callers, tests,
+    fixtures); a missed caller is a high finding.
+  - **Risky logic untested:** each new branch, loop, parser, money or security unit needs a
+    test that fails without it. Name the test and the assertion that would fail if the unit
+    were removed. Missing is a high finding.
+  - **Cut safety:** a deleted or weakened validation, error handling, security or
+    accessibility check is a high finding, even if the diff is shorter for it.
 - Findings: critical, high, medium or low. Each one needs `file:line` and the command, test or
   reasoning that shows it. A finding you cannot show is labelled UNVERIFIED, never dropped.
 - A bug the diff did not introduce (it is already at the BASE sha) is labelled `pre-existing`,
