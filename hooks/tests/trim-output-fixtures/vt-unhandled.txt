@@ -1,0 +1,184 @@
+
+ RUN  v3.2.7 /tmp/work/trim-hook/fx/vt
+
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 0 1ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 1 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 2 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 3 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 4 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 5 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 6 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 7 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 8 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 9 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 10 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 11 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 12 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 13 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 14 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 15 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 16 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 17 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 18 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 19 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 20 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 21 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 22 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 23 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 24 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 25 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 26 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 27 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 28 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 29 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 30 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 31 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 32 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 33 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 34 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 35 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 36 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 37 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 38 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 39 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 40 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 41 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 42 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 43 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 44 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 45 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 46 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 47 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 48 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 49 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 50 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 51 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 52 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 53 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 54 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 55 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 56 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 57 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 58 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 59 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 60 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 61 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 62 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 63 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 64 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 65 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 66 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 67 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 68 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 69 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 70 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 71 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 72 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 73 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 74 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 75 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 76 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 77 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 78 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 79 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 80 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 81 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 82 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 83 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 84 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 85 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 86 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 87 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 88 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 89 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 90 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 91 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 92 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 93 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 94 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 95 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 96 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 97 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 98 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 99 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 100 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 101 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 102 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 103 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 104 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 105 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 106 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 107 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 108 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 109 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 110 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 111 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 112 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 113 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 114 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 115 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 116 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 117 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 118 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 119 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 120 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 121 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 122 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 123 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 124 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 125 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 126 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 127 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 128 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 129 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 130 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 131 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 132 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 133 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 134 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 135 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 136 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 137 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 138 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 139 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 140 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 141 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 142 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 143 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 144 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 145 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 146 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 147 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 148 0ms
+ ✓ unhandled.test.ts > quiet group > quiet passing check number 149 0ms
+ ✓ unhandled.test.ts > leaky group > passes but leaks an error after it ends 32ms
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+Error: late unhandled boom
+ ❯ Timeout._onTimeout unhandled.test.ts:14:13
+     12|   it('passes but leaks an error after it ends', async () => {
+     13|     setTimeout(() => {
+     14|       throw new Error('late unhandled boom');
+       |             ^
+     15|     }, 0);
+     16|     await new Promise((r) => setTimeout(r, 30));
+ ❯ listOnTimeout ../../../../../../../../../home/dev/project/node:internal/timers:685:17
+ ❯ processTimers ../../../../../../../../../home/dev/project/node:internal/timers:618:7
+
+This error originated in "unhandled.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "passes but leaks an error after it ends". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 passed (1)
+      Tests  151 passed (151)
+     Errors  1 error
+   Start at  17:23:56
+   Duration  188ms (transform 19ms, setup 0ms, collect 17ms, tests 35ms, environment 0ms, prepare 32ms)
+

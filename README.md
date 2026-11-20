@@ -9,6 +9,34 @@ A skill is a folder with a `SKILL.md` that Claude Code loads when the task match
 description, or when you type `/<skill-name>`. You can read more in the
 [Claude Code skills docs](https://docs.claude.com/en/docs/claude-code/skills).
 
+## Guard hooks and the enforcement pyramid
+
+A rule in `CLAUDE.md` is a request. An agent can forget it. So I keep each rule as high as it
+can go in this pyramid, strongest first:
+
+1. **Codebase.** Your project's own lint, CI and tests. They fail the build for everyone.
+2. **Static.** Hooks and `permissions.deny` rules that refuse a command before it runs. They live in [`hooks/`](hooks/).
+3. **Verification.** Test suites that prove each hook refuses what it should and allows normal work. They live in `hooks/tests/`.
+4. **Prose.** `CLAUDE.md` lines and skills. Useful, but the agent can forget them.
+5. **You.** Rules only a person can hold: secrets in a password manager, production merges, approving `node_modules` removal.
+
+[`docs/pyramid.md`](docs/pyramid.md) maps every rule to its layer, the file that holds it and the test that proves it.
+
+The hooks refuse `git stash`, secret reads, `pkill` and `kill -1`, Claude attribution in commits, merges of fork branches,
+edits to the guards themselves (and their parent folders), foreground long commands, and heavy runs while memory or disk
+is critical. Project details (fork branches, extra protected folders, a lock script) go in `hooks/config.json`.
+An empty value turns that rule off.
+
+Install, from a clone of this repo (the clone command is under "Install" below):
+
+```bash
+mkdir -p ~/.claude/hooks && cp -R claude-skills/hooks/. ~/.claude/hooks/
+```
+
+1. Merge `hooks/settings.example.json` into `~/.claude/settings.json`. Keep your own keys; add its `hooks`, `env` and `permissions.deny` entries.
+2. Edit `~/.claude/hooks/config.json` for your projects.
+3. Run `bash ~/.claude/hooks/tests/run-all.sh` in the background. It takes a few minutes. Every line must say PASS.
+
 ## Install
 
 ```bash

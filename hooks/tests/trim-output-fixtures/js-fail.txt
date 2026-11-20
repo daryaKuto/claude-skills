@@ -1,0 +1,37 @@
+FAIL ./sample.test.js
+  ● scoring › best of three is the minimum
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: 3
+
+      11 |   }
+      12 |   test('best of three is the minimum', () => {
+    > 13 |     expect(Math.max(3, 1, 2)).toBe(1);
+         |                               ^
+      14 |   });
+      15 |   test('negative score throws unexpectedly', () => {
+      16 |     scoreOf(-5);
+
+      at Object.toBe (sample.test.js:13:31)
+
+  ● scoring › negative score throws unexpectedly
+
+    RangeError: negative score -5
+
+      1 | function scoreOf(x) {
+    > 2 |   if (x < 0) throw new RangeError('negative score ' + x);
+        |                    ^
+      3 |   return x;
+      4 | }
+      5 |
+
+      at scoreOf (sample.test.js:2:20)
+      at Object.scoreOf (sample.test.js:16:5)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 400 passed, 402 total
+Snapshots:   0 total
+Time:        0.156 s, estimated 1 s
+Ran all test suites matching sample.test.js.

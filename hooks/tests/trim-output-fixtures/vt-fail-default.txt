@@ -1,0 +1,297 @@
+
+ RUN  v3.2.7 /tmp/work/trim-hook/fx/vt
+
+ ❯ math.test.ts (223 tests | 3 failed) 9ms
+   ✓ math basics > passing addition case number 0 1ms
+   ✓ math basics > passing addition case number 1 0ms
+   ✓ math basics > passing addition case number 2 0ms
+   ✓ math basics > passing addition case number 3 0ms
+   ✓ math basics > passing addition case number 4 0ms
+   ✓ math basics > passing addition case number 5 0ms
+   ✓ math basics > passing addition case number 6 0ms
+   ✓ math basics > passing addition case number 7 0ms
+   ✓ math basics > passing addition case number 8 0ms
+   ✓ math basics > passing addition case number 9 0ms
+   ✓ math basics > passing addition case number 10 0ms
+   ✓ math basics > passing addition case number 11 0ms
+   ✓ math basics > passing addition case number 12 0ms
+   ✓ math basics > passing addition case number 13 0ms
+   ✓ math basics > passing addition case number 14 0ms
+   ✓ math basics > passing addition case number 15 0ms
+   ✓ math basics > passing addition case number 16 0ms
+   ✓ math basics > passing addition case number 17 0ms
+   ✓ math basics > passing addition case number 18 0ms
+   ✓ math basics > passing addition case number 19 0ms
+   ✓ math basics > passing addition case number 20 0ms
+   ✓ math basics > passing addition case number 21 0ms
+   ✓ math basics > passing addition case number 22 0ms
+   ✓ math basics > passing addition case number 23 0ms
+   ✓ math basics > passing addition case number 24 0ms
+   ✓ math basics > passing addition case number 25 0ms
+   ✓ math basics > passing addition case number 26 0ms
+   ✓ math basics > passing addition case number 27 0ms
+   ✓ math basics > passing addition case number 28 0ms
+   ✓ math basics > passing addition case number 29 0ms
+   ✓ math basics > passing addition case number 30 0ms
+   ✓ math basics > passing addition case number 31 0ms
+   ✓ math basics > passing addition case number 32 0ms
+   ✓ math basics > passing addition case number 33 0ms
+   ✓ math basics > passing addition case number 34 0ms
+   ✓ math basics > passing addition case number 35 0ms
+   ✓ math basics > passing addition case number 36 0ms
+   ✓ math basics > passing addition case number 37 0ms
+   ✓ math basics > passing addition case number 38 0ms
+   ✓ math basics > passing addition case number 39 0ms
+   ✓ math basics > passing addition case number 40 0ms
+   ✓ math basics > passing addition case number 41 0ms
+   ✓ math basics > passing addition case number 42 0ms
+   ✓ math basics > passing addition case number 43 0ms
+   ✓ math basics > passing addition case number 44 0ms
+   ✓ math basics > passing addition case number 45 0ms
+   ✓ math basics > passing addition case number 46 0ms
+   ✓ math basics > passing addition case number 47 0ms
+   ✓ math basics > passing addition case number 48 0ms
+   ✓ math basics > passing addition case number 49 0ms
+   ✓ math basics > passing addition case number 50 0ms
+   ✓ math basics > passing addition case number 51 0ms
+   ✓ math basics > passing addition case number 52 0ms
+   ✓ math basics > passing addition case number 53 0ms
+   ✓ math basics > passing addition case number 54 0ms
+   ✓ math basics > passing addition case number 55 0ms
+   ✓ math basics > passing addition case number 56 0ms
+   ✓ math basics > passing addition case number 57 0ms
+   ✓ math basics > passing addition case number 58 0ms
+   ✓ math basics > passing addition case number 59 0ms
+   ✓ math basics > passing addition case number 60 0ms
+   ✓ math basics > passing addition case number 61 0ms
+   ✓ math basics > passing addition case number 62 0ms
+   ✓ math basics > passing addition case number 63 0ms
+   ✓ math basics > passing addition case number 64 0ms
+   ✓ math basics > passing addition case number 65 0ms
+   ✓ math basics > passing addition case number 66 0ms
+   ✓ math basics > passing addition case number 67 0ms
+   ✓ math basics > passing addition case number 68 0ms
+   ✓ math basics > passing addition case number 69 0ms
+   ✓ math basics > passing addition case number 70 0ms
+   ✓ math basics > passing addition case number 71 0ms
+   ✓ math basics > passing addition case number 72 0ms
+   ✓ math basics > passing addition case number 73 0ms
+   ✓ math basics > passing addition case number 74 0ms
+   ✓ math basics > passing addition case number 75 0ms
+   ✓ math basics > passing addition case number 76 0ms
+   ✓ math basics > passing addition case number 77 0ms
+   ✓ math basics > passing addition case number 78 0ms
+   ✓ math basics > passing addition case number 79 0ms
+   ✓ math basics > passing addition case number 80 0ms
+   ✓ math basics > passing addition case number 81 0ms
+   ✓ math basics > passing addition case number 82 0ms
+   ✓ math basics > passing addition case number 83 0ms
+   ✓ math basics > passing addition case number 84 0ms
+   ✓ math basics > passing addition case number 85 0ms
+   ✓ math basics > passing addition case number 86 0ms
+   ✓ math basics > passing addition case number 87 0ms
+   ✓ math basics > passing addition case number 88 0ms
+   ✓ math basics > passing addition case number 89 0ms
+   ✓ math basics > passing addition case number 90 0ms
+   ✓ math basics > passing addition case number 91 0ms
+   ✓ math basics > passing addition case number 92 0ms
+   ✓ math basics > passing addition case number 93 0ms
+   ✓ math basics > passing addition case number 94 0ms
+   ✓ math basics > passing addition case number 95 0ms
+   ✓ math basics > passing addition case number 96 0ms
+   ✓ math basics > passing addition case number 97 0ms
+   ✓ math basics > passing addition case number 98 0ms
+   ✓ math basics > passing addition case number 99 0ms
+   ✓ math basics > passing addition case number 100 0ms
+   ✓ math basics > passing addition case number 101 0ms
+   ✓ math basics > passing addition case number 102 0ms
+   ✓ math basics > passing addition case number 103 0ms
+   ✓ math basics > passing addition case number 104 0ms
+   ✓ math basics > passing addition case number 105 0ms
+   ✓ math basics > passing addition case number 106 0ms
+   ✓ math basics > passing addition case number 107 0ms
+   ✓ math basics > passing addition case number 108 0ms
+   ✓ math basics > passing addition case number 109 0ms
+   ✓ math basics > passing addition case number 110 0ms
+   ✓ math basics > passing addition case number 111 0ms
+   ✓ math basics > passing addition case number 112 0ms
+   ✓ math basics > passing addition case number 113 0ms
+   ✓ math basics > passing addition case number 114 0ms
+   ✓ math basics > passing addition case number 115 0ms
+   ✓ math basics > passing addition case number 116 0ms
+   ✓ math basics > passing addition case number 117 0ms
+   ✓ math basics > passing addition case number 118 0ms
+   ✓ math basics > passing addition case number 119 0ms
+   ✓ math basics > passing addition case number 120 0ms
+   ✓ math basics > passing addition case number 121 0ms
+   ✓ math basics > passing addition case number 122 0ms
+   ✓ math basics > passing addition case number 123 0ms
+   ✓ math basics > passing addition case number 124 0ms
+   ✓ math basics > passing addition case number 125 0ms
+   ✓ math basics > passing addition case number 126 0ms
+   ✓ math basics > passing addition case number 127 0ms
+   ✓ math basics > passing addition case number 128 0ms
+   ✓ math basics > passing addition case number 129 0ms
+   ✓ math basics > passing addition case number 130 0ms
+   ✓ math basics > passing addition case number 131 0ms
+   ✓ math basics > passing addition case number 132 0ms
+   ✓ math basics > passing addition case number 133 0ms
+   ✓ math basics > passing addition case number 134 0ms
+   ✓ math basics > passing addition case number 135 0ms
+   ✓ math basics > passing addition case number 136 0ms
+   ✓ math basics > passing addition case number 137 0ms
+   ✓ math basics > passing addition case number 138 0ms
+   ✓ math basics > passing addition case number 139 0ms
+   ✓ math basics > passing addition case number 140 0ms
+   ✓ math basics > passing addition case number 141 0ms
+   ✓ math basics > passing addition case number 142 0ms
+   ✓ math basics > passing addition case number 143 0ms
+   ✓ math basics > passing addition case number 144 0ms
+   ✓ math basics > passing addition case number 145 0ms
+   ✓ math basics > passing addition case number 146 0ms
+   ✓ math basics > passing addition case number 147 0ms
+   ✓ math basics > passing addition case number 148 0ms
+   ✓ math basics > passing addition case number 149 0ms
+   ✓ math basics > passing addition case number 150 0ms
+   ✓ math basics > passing addition case number 151 0ms
+   ✓ math basics > passing addition case number 152 0ms
+   ✓ math basics > passing addition case number 153 0ms
+   ✓ math basics > passing addition case number 154 0ms
+   ✓ math basics > passing addition case number 155 0ms
+   ✓ math basics > passing addition case number 156 0ms
+   ✓ math basics > passing addition case number 157 0ms
+   ✓ math basics > passing addition case number 158 0ms
+   ✓ math basics > passing addition case number 159 0ms
+   ✓ math basics > passing addition case number 160 0ms
+   ✓ math basics > passing addition case number 161 0ms
+   ✓ math basics > passing addition case number 162 0ms
+   ✓ math basics > passing addition case number 163 0ms
+   ✓ math basics > passing addition case number 164 0ms
+   ✓ math basics > passing addition case number 165 0ms
+   ✓ math basics > passing addition case number 166 0ms
+   ✓ math basics > passing addition case number 167 0ms
+   ✓ math basics > passing addition case number 168 0ms
+   ✓ math basics > passing addition case number 169 0ms
+   ✓ math basics > passing addition case number 170 0ms
+   ✓ math basics > passing addition case number 171 0ms
+   ✓ math basics > passing addition case number 172 0ms
+   ✓ math basics > passing addition case number 173 0ms
+   ✓ math basics > passing addition case number 174 0ms
+   ✓ math basics > passing addition case number 175 0ms
+   ✓ math basics > passing addition case number 176 0ms
+   ✓ math basics > passing addition case number 177 0ms
+   ✓ math basics > passing addition case number 178 0ms
+   ✓ math basics > passing addition case number 179 0ms
+   ✓ math basics > passing addition case number 180 0ms
+   ✓ math basics > passing addition case number 181 0ms
+   ✓ math basics > passing addition case number 182 0ms
+   ✓ math basics > passing addition case number 183 0ms
+   ✓ math basics > passing addition case number 184 0ms
+   ✓ math basics > passing addition case number 185 0ms
+   ✓ math basics > passing addition case number 186 0ms
+   ✓ math basics > passing addition case number 187 0ms
+   ✓ math basics > passing addition case number 188 0ms
+   ✓ math basics > passing addition case number 189 0ms
+   ✓ math basics > passing addition case number 190 0ms
+   ✓ math basics > passing addition case number 191 0ms
+   ✓ math basics > passing addition case number 192 0ms
+   ✓ math basics > passing addition case number 193 0ms
+   ✓ math basics > passing addition case number 194 0ms
+   ✓ math basics > passing addition case number 195 0ms
+   ✓ math basics > passing addition case number 196 0ms
+   ✓ math basics > passing addition case number 197 0ms
+   ✓ math basics > passing addition case number 198 0ms
+   ✓ math basics > passing addition case number 199 0ms
+   × math basics > adds negative numbers wrongly 3ms
+     → expected -5 to be -6 // Object.is equality
+   × math basics > parses a bad score 0ms
+     → cannot parse score: abc
+   × second group > deep equality fails 1ms
+     → expected { a: 1, b: [ 1, 2, 3 ] } to deeply equal { a: 1, b: [ 1, 2, 4 ] }
+   ✓ second group > another passing check 0 0ms
+   ✓ second group > another passing check 1 0ms
+   ✓ second group > another passing check 2 0ms
+   ✓ second group > another passing check 3 0ms
+   ✓ second group > another passing check 4 0ms
+   ✓ second group > another passing check 5 0ms
+   ✓ second group > another passing check 6 0ms
+   ✓ second group > another passing check 7 0ms
+   ✓ second group > another passing check 8 0ms
+   ✓ second group > another passing check 9 0ms
+   ✓ second group > another passing check 10 0ms
+   ✓ second group > another passing check 11 0ms
+   ✓ second group > another passing check 12 0ms
+   ✓ second group > another passing check 13 0ms
+   ✓ second group > another passing check 14 0ms
+   ✓ second group > another passing check 15 0ms
+   ✓ second group > another passing check 16 0ms
+   ✓ second group > another passing check 17 0ms
+   ✓ second group > another passing check 18 0ms
+   ✓ second group > another passing check 19 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  math.test.ts > math basics > adds negative numbers wrongly
+AssertionError: expected -5 to be -6 // Object.is equality
+
+- Expected
++ Received
+
+- -6
++ -5
+
+ ❯ math.test.ts:11:25
+      9|   }
+     10|   it('adds negative numbers wrongly', () => {
+     11|     expect(add(-2, -3)).toBe(-6);
+       |                         ^
+     12|   });
+     13|   it('parses a bad score', () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  math.test.ts > math basics > parses a bad score
+Error: cannot parse score: abc
+ ❯ parseScore math.ts:7:30
+      5| export function parseScore(s: string): number {
+      6|   const n = Number(s);
+      7|   if (Number.isNaN(n)) throw new Error(`cannot parse score: ${s}`);
+       |                              ^
+      8|   return n;
+      9| }
+ ❯ math.test.ts:14:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  math.test.ts > second group > deep equality fails
+AssertionError: expected { a: 1, b: [ 1, 2, 3 ] } to deeply equal { a: 1, b: [ 1, 2, 4 ] }
+
+- Expected
++ Received
+
+  {
+    "a": 1,
+    "b": [
+      1,
+      2,
+-     4,
++     3,
+    ],
+  }
+
+ ❯ math.test.ts:20:36
+     18| describe('second group', () => {
+     19|   it('deep equality fails', () => {
+     20|     expect({ a: 1, b: [1, 2, 3] }).toEqual({ a: 1, b: [1, 2, 4] });
+       |                                    ^
+     21|   });
+     22|   for (let i = 0; i < 20; i++) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 220 passed (223)
+   Start at  17:10:37
+   Duration  186ms (transform 19ms, setup 0ms, collect 18ms, tests 9ms, environment 0ms, prepare 30ms)
+

@@ -1,0 +1,99 @@
+
+ RUN  v3.2.7 /tmp/work/trim-hook/fx/vt
+
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 0 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 1 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 2 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 3 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 4 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 5 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 6 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 7 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 8 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 9 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 10 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 11 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 12 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 13 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 14 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 15 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 16 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 17 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 18 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 19 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 20 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 21 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 22 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 23 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 24 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 25 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 26 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 27 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 28 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 29 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 30 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 31 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 32 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 33 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 34 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 35 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 36 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 37 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 38 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 39 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 40 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 41 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 42 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 43 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 44 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 45 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 46 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 47 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 48 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 49 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 50 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 51 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 52 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 53 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 54 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 55 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 56 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 57 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 58 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 59 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 60 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 61 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 62 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 63 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 64 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 65 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 66 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 67 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 68 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 69 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 70 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 71 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 72 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 73 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 74 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 75 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 76 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 77 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 78 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 79 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 80 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 81 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 82 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 83 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 84 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 85 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 86 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 87 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 88 0ms
+ ✓ pass.test.ts > all green > green case with a reasonably long descriptive name 89 0ms
+
+ Test Files  1 passed (1)
+      Tests  90 passed (90)
+   Start at  17:10:38
+   Duration  157ms (transform 20ms, setup 0ms, collect 18ms, tests 2ms, environment 0ms, prepare 31ms)
+

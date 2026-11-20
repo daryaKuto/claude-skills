@@ -318,7 +318,9 @@ verify, report the change as UNVERIFIED and the task as not done.
 
 ## Hard stops (never, unless I say yes in this conversation)
 - Never `git stash`. Stashes are shared across worktrees; commit WIP to a branch.
+  Held by `hooks/stash-secret-guard.py` and a settings deny rule.
 - Never add Claude attribution (Co-Authored-By, "Generated with") to a commit or PR.
+  Held by `hooks/commit-guard.py`.
 - Never commit agent working material: `.claude/`, `specs/`, scratch plans.
 - Never merge a branch the project marks as a permanent fork into main. Merges
   go from main into the fork only.
@@ -341,8 +343,23 @@ verify, report the change as UNVERIFIED and the task as not done.
   need my yes.
 - Never delete data, branches or files you did not create in this session.
 - Never print secrets, keys or tokens found in files, logs or env output.
+  Held by `hooks/stash-secret-guard.py`, the Read deny rules and `hooks/lib/env-keys.py` (variable names only).
 - Never claim done without evidence: the command, its output, what it proves.
   A green build or a successful tool call is not proof.
 - Never invent project facts, numbers or history.
+
+## Guard hooks (rules a hook holds, so you do not have to remember them)
+The hooks live in `hooks/` and are explained in `docs/pyramid.md`. A guard that refuses a command says why in its
+message: follow the message, do not respell the command.
+- Long commands (full test suites, builds, installs, deploys, watches, waits, `sleep` over 30 s) run with
+  `run_in_background: true`. Do other work and wait for the completion notice; never poll or sleep. Held by `hooks/heavy-guard.py`.
+- A guard that protects a folder also protects every parent of it: do not `rm`, `mv`, whole-folder copy or aim git at `~`,
+  `~/Documents` or a project root that holds guard files. Held by `hooks/tamper-guard.py`.
+- Free disk with `python3 ~/.claude/hooks/lib/free-disk.py --yes --caches-only`. Removing `node_modules` is the user's call
+  (`--yes` alone). Docker volumes and other sessions' containers are never touched.
+- Guard files (`~/.claude/hooks/`, `settings*.json`, `CLAUDE.md`) are edited by the main session in a reviewed change, never by
+  a subagent. Held by `hooks/write-guard.py` and `hooks/tamper-guard.py`.
+- Stop processes only by the pid you recorded when you started them. `pkill`, `killall`, `kill -1` and `kill 0` are refused
+  by `hooks/kill-guard.py`.
 
 @~/.claude/pstack-models.md
