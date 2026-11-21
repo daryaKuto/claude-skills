@@ -60,6 +60,16 @@ try:
     if not os.path.isdir(os.path.join(f, "node_modules")) or "lsof failed" not in r2.stderr:
         fails += 1
         print("FAIL lsof failing must keep node_modules and say so:", r2.stderr[:120])
+    if r.returncode != 0:
+        fails += 1
+        print("FAIL --yes --caches-only with lsof failing must exit 0, got", r.returncode, r.stderr[:100])
+    # the agent form with the REAL lsof: the repo is idle (lockfile, files 30 days old, nothing running in it), so the only thing
+    # keeping node_modules is --caches-only itself skipping the node_modules step
+    h = repo("capsonly")
+    r = subprocess.run([sys.executable, TOOL, "--yes", "--caches-only"], capture_output=True, text=True, env=env, timeout=60)
+    if r.returncode != 0 or not os.path.isdir(os.path.join(h, "node_modules")):
+        fails += 1
+        print("FAIL --yes --caches-only (real lsof) must exit 0 and keep an idle repo's node_modules:", r.returncode, r.stderr[:100])
     # loop 3, A: in an agent shell (CLAUDECODE=1) a bare --yes is refused by the tool itself, however the command was spelled
     g = repo("agentguard")
     aenv = {**env, "CLAUDECODE": "1"}

@@ -1,0 +1,19 @@
+# One suite file name per line (run-all.sh runs exactly these). Add a new suite here, or run-all.sh fails.
+bypass-corpus.py
+commit-guard-cases.py
+env-keys-cases.py
+free-disk-cases.py
+heavy-guard-cases.py
+kill-guard-cases.py
+no-private-terms-cases.py
+policy-guard-cases.py
+readonly-battery.py
+settings-cases.py
+shed-load-cases.py
+sonnet-workers-guard-cases.py
+stash-secret-guard-cases.py
+tamper-ancestors-cases.py
+tamper-guard-cases.py
+trim-output-cases.py
+vscode-guard-cases.py
+write-guard-cases.py

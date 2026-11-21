@@ -41,6 +41,14 @@ SEP = set(";&|\n()`")
 ENV_KEYS = os.path.realpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "lib", "env-keys.py"))
 # commands that never print a file's content (wc prints only counts)
 NO_PRINT = {"ls", "test", "[", "[[", "stat", "file", "wc", "touch", "chmod", "chown", "rm", "echo", "printf", "cd", "basename", "dirname"}
+# Tools that read a list of names from the file given as --files0-from and print each one in their errors; wc accepts
+# any abbreviation from --f on, du from --f, sort from --fil (sort also has --field-separator, which must stay allowed).
+F0_RE = {**{c: r"--f[\w-]*=" for c in ("wc", "gwc", "du", "gdu")}, **{c: r"--fil[\w-]*=" for c in ("sort", "gsort")}}
+# tar and rsync read a name list from a file; its text appears in their errors. tar also takes -T FILE, glued -TFILE and a
+# cluster ending in T (-cTFILE); a cluster with f or C before the T has the archive or directory as its glued value instead.
+# bsdtar and openrsync also accept any abbreviation from --files on (--files=, --files-fr=), and print the text the same way.
+_FILES_FROM = r"--files(?:-|-f|-fr|-fro|-from)?="
+LISTFROM_RE = {"rsync": _FILES_FROM + r"(.*)", **{c: r"(?:" + _FILES_FROM + r"|-(?:(?![fC])[A-Za-z])*T)(.+)" for c in ("tar", "gtar", "bsdtar")}}
 GIT_NO_PRINT = {"status", "add", "rm", "mv", "ls-files", "check-ignore", "commit", "restore", "reset"}
 GIT_DIFF_NAMES = {"--stat", "--name-only", "--name-status", "--shortstat", "--numstat", "-q", "--quiet"}
 # Flags that make git print file content: diff -p/-u/-U<n>/--no-index/--exit-code (it also prints the patch); status/add/commit -v/-p.
@@ -417,6 +425,8 @@ def judge(seg, depth=0, body=False):
                 else:
                     pat = {k}
                     break
+    applet = args[0] if cmd == "busybox" and args else cmd
+    f0_re = F0_RE.get(applet)
     names = []  # (index in args, word)
     for k, a in enumerate(args):
         prev = args[k - 1] if k else ""
@@ -432,12 +442,17 @@ def judge(seg, depth=0, body=False):
             if not loads_env:  # --env=.env: the value is the path
                 names.append((k, a.split("=", 1)[1]))
             continue
+        lm = re.fullmatch(LISTFROM_RE[cmd], a) if cmd in LISTFROM_RE else None
+        if lm:  # tar --files-from=FILE, tar -TFILE, rsync --files-from=FILE: the value is the path it reads
+            names.append((k, lm.group(1)))
+            continue
+        if f0_re and re.match(f0_re, a):  # --files0-from=FILE: the value is the path it reads (wc, du, sort, GNU g-names, busybox)
+            names.append((k, a.split("=", 1)[1]))
+            continue
         names.append((k, a))
     if cmd in ("docker", "docker-compose") and not envfile_ok and any(
             a.startswith("--env-file=") and secret_path(a.split("=", 1)[1]) for a in args):
         return SECRET_FIX
-    if cmd == "wc" or (cmd == "xargs" and "wc" in args):  # --files0-from=FILE (or an abbreviation): the value after "=" is the file wc reads and echoes
-        names += [(k, a.split("=", 1)[1]) for k, a in names if a.startswith("--f") and "=" in a]
     if cmd in COPIERS:
         pos = [a for k, a in names if not a.startswith("-")]
         # -t DIR / --target-directory=DIR (also bundled, -vt DIR) makes every positional a source; with fewer than two
@@ -513,12 +528,39 @@ def pipe_state(t, piped):
             AWS_CWD[0] = True  # unresolvable target: a bare credentials or config word may now be the secret file
         else:
             CWD[0] = os.path.realpath(os.path.join(CWD[0], os.path.expanduser(target)))
-    elif os.path.basename(t[0]) == "xargs" and piped:
+    elif os.path.basename(t[0]) == "xargs":
         k = 1
+        arg_files = []  # xargs -a FILE / -aFILE / --arg-file FILE / --arg-file=FILE reads its input from FILE
         while k < len(t) and t[k].startswith("-"):
-            k += 2 if t[k] in ("-I", "-n", "-P", "-L", "-s", "-d", "-E", "-a") else 1
-        if k < len(t) and (os.path.basename(t[k]) not in NO_PRINT or any(a.startswith("--f") for a in t[k + 1:])):
-            return SECRET_FIX
+            w = t[k]
+            # GNU xargs takes any prefix of --arg-file (--a, --arg=FILE); it is the only long option starting --a
+            long_a = re.fullmatch(r"--a(?:r(?:g(?:-(?:f(?:i(?:le?)?)?)?)?)?)?(?:=(.*))?", w)
+            if w == "-a" or long_a and long_a.group(1) is None:
+                arg_files += t[k + 1:k + 2]
+            elif long_a:
+                arg_files.append(long_a.group(1))
+            elif re.fullmatch(r"-[0rtpxo]*a(.+)", w):  # -aFILE, or -a glued at the end of a cluster: -rtaFILE
+                arg_files.append(re.fullmatch(r"-[0rtpxo]*a(.+)", w).group(1))
+            k += 2 if w in ("-I", "-n", "-P", "-L", "-s", "-d", "-E", "-a") or long_a and long_a.group(1) is None else 1
+        if any(secret_path(f) for f in arg_files):
+            return SECRET_FIX  # the lines of the file become the command's arguments, and tools print those in errors
+        # skip words that only run the next word: xargs nice wc ..., xargs env VAR=x du ..., xargs busybox wc ...
+        while k < len(t) and (os.path.basename(t[k]) in PREFIX | {"env", "busybox", "timeout", "stdbuf"} or re.fullmatch(r"\w+=.*", t[k])):
+            wrap = os.path.basename(t[k])
+            k += 1
+            two = {"-n"} | ({"-s", "-k"} if wrap == "timeout" else set()) | ({"-i", "-o", "-e"} if wrap == "stdbuf" else set())
+            while k < len(t) and t[k].startswith("-"):
+                k += 2 if t[k] in two else 1
+            if wrap == "timeout":
+                k += 1  # timeout takes one duration word before the command
+        if k < len(t):
+            base, rest = os.path.basename(t[k]), t[k + 1:]
+            # --files0-from=F (or the abbreviation the tool accepts) prints F's text; without the "=" the pattern also catches the spaced form
+            f0 = base in F0_RE and any(re.match(F0_RE[base][:-1], a) for a in rest)
+            if piped and (base not in NO_PRINT or f0):
+                return SECRET_FIX
+            if f0 and any(secret_path(a.split("=", 1)[-1]) for a in rest):
+                return SECRET_FIX
     return None
 
 

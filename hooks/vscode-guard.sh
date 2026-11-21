@@ -30,10 +30,33 @@ value_flags=(--branch -b --depth --origin -o --config -c --reference \
 
 positional=()
 skip_next=0
+# A quiet clone (-q, --quiet, stderr redirected) prints no "Cloning into" line, so the output check below cannot run.
+quiet=0
+re_err='git[[:space:]]+clone([^;|&]|&>)*(2>|&>)'
+[[ "$cmd" =~ $re_err ]] && quiet=1
+re_redir='^[0-9&]*>+'
+re_bare='^[0-9&]*>+$'
+re_q='^-[a-zA-Z]*q[a-zA-Z0-9]*$'
 # tokens[0]=git tokens[1]=clone
 for tok in "${tokens[@]:2}"; do
   if [[ $skip_next -eq 1 ]]; then
     skip_next=0
+    continue
+  fi
+  # redirections are not arguments: `2>/dev/null`, `2>`, `2> /dev/null`, `>`
+  if [[ "$tok" =~ $re_redir ]]; then
+    [[ "$tok" =~ $re_bare ]] && skip_next=1
+    continue
+  fi
+  if [[ "$tok" == --quiet || "$tok" == -q ]]; then
+    quiet=1
+    continue
+  fi
+  # a cluster may end in a glued number (-qj4): still a cluster, and its q still means quiet
+  if [[ "$tok" =~ ^-[a-zA-Z][a-zA-Z0-9]+$ ]]; then
+    [[ "$tok" =~ $re_q ]] && quiet=1
+    # a cluster like -vb or -qb ends in a letter that takes a value (b o c j u): that value is the next word
+    [[ "$tok" =~ [bocju]$ ]] && skip_next=1
     continue
   fi
   if [[ "$tok" == -* ]]; then
@@ -51,6 +74,8 @@ done
 url="${positional[0]:-}"
 dir="${positional[1]:-}"
 [[ -z "$url" ]] && exit 0
+# git prints the folder without its trailing slash, and the output check below matches that text.
+while [[ "$dir" == */ && "$dir" != "/" ]]; do dir="${dir%/}"; done
 
 if [[ -z "$dir" ]]; then
   base=$(basename "$url")
@@ -78,8 +103,25 @@ fi
 # carries the output in tool_response (stdout and stderr, no exit code): git prints "Cloning into '<dir>'"
 # for a real clone and "fatal:" when it stops. If the output is missing or unclear, do nothing.
 resp=$(echo "$input" | jq -r '.tool_response | if type=="object" then ((.stderr // "") + "\n" + (.stdout // "")) elif type=="string" then . else "" end' 2>/dev/null || true)
-grep -qF "Cloning into '$dir'" <<< "$resp" || exit 0
-grep -qE '^(fatal|error):' <<< "$resp" && exit 0
+if [[ $quiet -eq 1 ]]; then
+  # No "Cloning into" line to read. A failed clone into an existing repo (`|| true`, `; echo`) also reaches this hook,
+  # so prove the folder was cloned just now: the oldest HEAD reflog entry is "clone: from" and under 120 s old.
+  first=$(git -C "$dir" reflog --date=unix --format='%gd|%gs' 2>/dev/null | tail -1 || true)
+  if [[ -z "$first" ]]; then
+    # No reflog at all (core.logAllRefUpdates=false): fall back to when .git was created (macOS birth time).
+    # shortcut: other systems have no portable birth time, so the folder is left alone there.
+    [[ "$(uname)" == Darwin ]] || exit 0
+    born=$(stat -f %B "$dir/.git" 2>/dev/null || true)
+    [[ "$born" =~ ^[0-9]+$ ]] || exit 0
+    (( $(date +%s) - born <= 120 )) || exit 0
+  else
+    [[ "$first" =~ ^HEAD@\{([0-9]+)\}\|clone:\ from ]] || exit 0
+    (( $(date +%s) - BASH_REMATCH[1] <= 120 )) || exit 0
+  fi
+else
+  grep -qF "Cloning into '$dir'" <<< "$resp" || exit 0
+  grep -qE '^(fatal|error):' <<< "$resp" && exit 0
+fi
 
 if [[ -d "$dir/.vscode" ]]; then
   rm -rf "$dir/.vscode"

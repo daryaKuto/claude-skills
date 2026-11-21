@@ -73,6 +73,9 @@ DENY = [
     "python3 - <<'EOF' | cat\nimport os\nprint(os.environ)\nEOF",
     # security review after 146e230: dotenv prints values; flags are not value options; glob literals in code
     "dotenv -e .env -p SECRET", "dotenv -f .env list", "grep -F x .*", "grep -v x .*",
+    # round 6: dotenv prints values even with a `-- cmd` after it; npm, pnpm and yarn load --env-file for node only when the tool is node
+    "dotenv -e .env -p SECRET -- echo", "dotenv -e .env list -- echo", "dotenv -e .env get SECRET -- echo",
+    "npm exec --env-file .env -- cat", "pnpm dlx --env-file .env cat", "yarn --env-file .env cat x",
     "python3 -c \"import glob; print(open(glob.glob('.*')[0]).read())\"",
     "git config --comment x alias.zz '!x'", "git config --type bool alias.zz '!x'","XDG_CONFIG_HOME=/tmp/x git zz", "env HOME=/tmp/h git zz",
     "git config include.path /tmp/x","git config --global includeIf.gitdir:/a/.path /tmp/x", "git config --add alias.q 'log -1'",
@@ -167,6 +170,30 @@ DENY += [
     "awk 'BEGIN{for(k in ENVIRON) print k, ENVIRON[k]}'", "gawk 'BEGIN{print length(ENVIRON)}'",
     "python3 - <<'EOF'\nimport os\nprint(os.environ)\nEOF", "node - <<'EOF'\nconsole.log(process.env)\nEOF",
     "ruby - <<'EOF'\nputs ENV.to_h\nEOF",
+    # round 7: --files0-from names a file the tool reads and prints from, in every tool and wrapper form
+    "xargs --arg-file=.env wc", "xargs --arg-file .env wc", "xargs -a.env wc", "xargs -a .env wc",
+    "xargs nice wc --files0-from=.env", "xargs env X=1 wc --files0-from=.env", "xargs busybox wc --files0-from=.env",
+    "busybox wc --files0-from=.env", "gwc --files0-from=.env", "gwc --f=.env", "du --files0-from=.env", "gdu --files0-from=.env",
+    "sort --files0-from=.env", "gsort --files0-from=.env", "nice sort --files0-from=.env", "env du --files0-from=.env",
+    "ls | xargs du --files0-from=.env",
+    # round 8: name-list flags of tar and rsync, GNU abbreviations, more xargs wrappers
+    "tar --files-from=.env -cf x.tar", "tar --files-from .env -cf x.tar", "tar -T .env -cf x.tar", "tar -T.env -cf x.tar",
+    "tar -cT .env -f x.tar", "tar -cT.env -f x.tar", "rsync --files-from=.env a/ b/", "rsync --files-from .env a/ b/",
+    # GNU xargs accepts any prefix of --arg-file
+    "xargs --arg=.env echo", "xargs --a .env echo", "xargs --arg-fi=.env.local echo", "xargs -0 --arg .env echo",
+    # bsdtar and openrsync accept abbreviations from --files on, and print the file's text in their errors
+    "tar -cf /dev/null --files=.env", "tar --files-fro=.env -cf x.tar", "rsync --files=.env . /tmp/x", "rsync --files-fr=.env . /tmp/x",
+    "sort --files=.env", "sort --fil=.env", "du --f=.env", "gdu --f=.env", "gsort --files=.env", "sort --files0=.env",
+    "xargs timeout 5 wc --files0-from=.env", "xargs stdbuf -o0 wc --files0-from=.env", "xargs -rta.env ls", "xargs -0a.env ls",
+    "xargs sudo wc --files0-from=.env",
+]
+ALLOW += [
+    "tar -cf out.tar src", "rsync -a src/ dst/", "tar -T list.txt -cf x.tar", "tar --files-from=list.txt -cf x.tar",
+    "rsync --files-from=list.txt a/ b/", "sort --field-separator=, a.txt", "xargs timeout 5 wc -l", "xargs -rta list.txt ls",
+]
+ALLOW += [
+    "du -sh .", "sort a.txt", "xargs -a list.txt wc -l", "du --files0-from=list.txt", "sort --files0-from=names.txt",
+    "gwc --files0-from=list.txt", "xargs nice wc -l", "busybox wc -l list.txt",
 ]
 # loop 3 fix C: HOME / XDG_CONFIG_HOME assignments get their own refusal message
 MSG_ROWS = [("export HOME=/tmp/h", "HOME or XDG_CONFIG_HOME"), ("XDG_CONFIG_HOME=/tmp/x git status", "HOME or XDG_CONFIG_HOME"),

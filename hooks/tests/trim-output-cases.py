@@ -77,6 +77,12 @@ def check(name, ok, detail=""):
     print(("PASS " if ok else "FAIL ") + name + ("" if ok else "  <- " + str(detail)[:300]))
 
 
+def within(name, secs, limit=1.0):
+    """A row that gives the right answer but too slowly is its own line (SLOW), not a wrong answer; it still fails the run."""
+    results.append(secs < limit)
+    print(("PASS " if secs < limit else "SLOW ") + f"{name} took {secs:.2f}s, limit {limit:.1f}s")
+
+
 def has_all(name, text, needles):
     miss = [n for n in needles if n not in text]
     check(name, not miss, f"missing {miss}")
@@ -377,22 +383,27 @@ vt, _ = fx("vt-fail-default")
 filler = "".join(f" ✓ big.test.ts > case {i} 0ms\n" for i in range(150000))
 CUTLINE = "\n... [123456 characters truncated] ...\n"
 out, _, t1 = run(event(filler[:5_000_000] + CUTLINE + vt, 1, "npx vitest run"))
-check(f"5 MB failing run with the cut marker, failures at the end: {t1:.2f}s, failures found", t1 < 1.0 and "adds negative numbers wrongly" in summary_of(out), t1)
+check("5 MB failing run with the cut marker, failures at the end: failures found", "adds negative numbers wrongly" in summary_of(out), t1)
+within("5 MB failing run with the cut marker", t1)
 script, _ = fx("nt-script")
 big_err = ("x" * 80 + " Error: boom\n") * 60000 + CUTLINE + script
 out, _, t2 = run(event(big_err, 1, "node tests/big.mjs"))
-check(f"5 MB of error lines (worst case for the fallback): {t2:.2f}s, summary capped", t2 < 1.0 and len(summary_of(out)) < 9000, (t2, len(summary_of(out)) if out else 0))
+check("5 MB of error lines (worst case for the fallback): summary capped", len(summary_of(out)) < 9000, len(summary_of(out)) if out else 0)
+within("5 MB of error lines", t2)
 big_ok = filler[:5_000_000] + "\n Test Files  1 passed (1)\n      Tests  150000 passed (150000)\n"
 out, _, t3 = run(event(big_ok, 0, "npx vitest run"))
-check(f"5 MB passing run: {t3:.2f}s, totals kept", t3 < 1.0 and "Tests  150000 passed" in summary_of(out), t3)
+check("5 MB passing run: totals kept", "Tests  150000 passed" in summary_of(out), t3)
+within("5 MB passing run", t3)
 tap_block = "".join(f"    not ok {i} - failing case {i}\n      location: '/x/f.js:{i}:1'\n      failureType: 'testCodeFailure'\n      error: 'boom {i}'\n      code: 'ERR_TEST_FAILURE'\n" for i in range(20000))
 tap = "TAP version 13\n" + tap_block + ("    ok 1 - padding line to reach five megabytes of tap output\n" * 30000) + "# tests 20000\n# pass 0\n# fail 20000\n"  # derived from real TAP blocks
 out, _, t4 = run(event(tap[:4_000_000] + CUTLINE + tap[-1_000_000:], 1, "node --test a.test.js"))
 s = summary_of(out)
-check(f"5 MB TAP log with 20,000 `not ok` lines: {t4:.2f}s, falls back to error lines", len(tap) > 4_900_000 and t4 < 1.0 and "parser found 0 of 20000 failures" in s, (t4, s[:200]))
+check("5 MB TAP log with 20,000 `not ok` lines: falls back to error lines", len(tap) > 4_900_000 and "parser found 0 of 20000 failures" in s, s[:200])
+within("5 MB TAP log with 20,000 `not ok` lines", t4)
 big_tap = "TAP version 13\n" + tap_block[: 5_000_000 // 8] * 1 + "# tests 20000\n# pass 0\n# fail 20000\n"
 out, _, t5 = run(event(big_tap, 1, "node --test a.test.js"))
-check(f"TAP log over the 500 `not ok` cap, no Claude Code cut: untouched and fast: {t5:.2f}s", t5 < 1.0 and out == "", t5)
+check("TAP log over the 500 `not ok` cap, no Claude Code cut: untouched", out == "", t5)
+within("TAP log over the 500 `not ok` cap", t5)
 
 shutil.rmtree(HOME, ignore_errors=True)
 n_ok = sum(results)
