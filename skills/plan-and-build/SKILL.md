@@ -188,6 +188,12 @@ The global CLAUDE.md applies in full. This adds what is specific here.
 | `amendments.md` | Optional. Owner changes made after plan mode; wins over `plan.md` where they conflict. |
 | `progress.md` | The run log. Every state change is one line, so a restarted run resumes from it. |
 | `briefs/`, `reports/`, `diffs/` | Every brief sent, every report and review written, every diff reviewed. |
+| `lanes/<lane>/` | Lanes (side sessions the orchestrator starts): `handoff.md` is the lane's one progress doc, built from `templates/lane-handoff.md`; `scratch/` holds briefs, rulings and logs worth keeping. |
+
+Every lane an orchestrator starts gets `docs/plans/<orchestrator plan>/lanes/<lane>/`, whatever plan the lane works on,
+and every lane brief names that folder. Throwaway files go in the session scratchpad. `hooks/write-guard.py` denies
+`lane-*.md`, `handoff-lane-*.md` and `.bak` copies anywhere else under a folder listed in `plans_dirs` in
+`hooks/config.json` (use git, not `.bak` copies).
 
 ## Open-question sweep
 
@@ -504,6 +510,16 @@ fact answer has a "How we know", every choice is a register decision, and the pl
       merge only on exit 0; log its output line. If `gh pr view <number> --json state` is not
       MERGED, run `gh pr merge <number> --squash --delete-branch --match-head-commit <head sha
       the guard checked>`, so a push after the check cannot be merged unchecked.
+
+      No PR CI: CI runs only on a push to the dev branch. Only for a PR into the dev branch
+      named in the project's CLAUDE.md "Full send to dev" section, and only once that branch's
+      `ci.yml` has no `pull_request` trigger for it, skip the CI guard above and gate on local
+      proof instead. Go mode first runs the section's local checks on the PR head and logs
+      `C<n> local-checks pass <head sha>`; a full-send-dev run uses its
+      `FS <slug> proof pass <head sha>` line. Either way, merge with that sha in
+      `--match-head-commit`, so an unchecked push cannot merge. Any other base, and every PR
+      into the default branch, keeps the CI guard. In a full send, use the project's remote and
+      dev branch from its CLAUDE.md wherever these steps say `origin` and `plan/<slug>`.
    4. Check it landed: `gh pr view <number> --json state,mergeCommit` shows MERGED, then
       `git fetch origin && git merge-base --is-ancestor <mergeCommit sha> origin/plan/<slug>`
       exits 0. Log `C<n> merged <url>`.

@@ -1,0 +1,12 @@
+{
+  "disk_block_gb": 20,
+  "disk_warn_gb": 40,
+  "free_critical_pct": 15,
+  "free_warn_pct": 30,
+  "swap_critical_pct": 97,
+  "swap_critical_free_below": 40,
+  "swap_warn_pct": 92,
+  "swap_warn_free_below": 50,
+  "fall_critical_gb": 10,
+  "fall_window_s": 300
+}

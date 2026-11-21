@@ -1,0 +1,287 @@
+
+ RUN  v3.2.7 /tmp/work/trim-hook/fx/vt
+
+ ❯ beforeall.test.ts (262 tests | 2 skipped) 8ms
+   ↓ db suite > first test needs the db
+   ↓ db suite > second test needs the db
+   ✓ plain group > plain passing check number 0 0ms
+   ✓ plain group > plain passing check number 1 0ms
+   ✓ plain group > plain passing check number 2 0ms
+   ✓ plain group > plain passing check number 3 0ms
+   ✓ plain group > plain passing check number 4 0ms
+   ✓ plain group > plain passing check number 5 0ms
+   ✓ plain group > plain passing check number 6 0ms
+   ✓ plain group > plain passing check number 7 0ms
+   ✓ plain group > plain passing check number 8 0ms
+   ✓ plain group > plain passing check number 9 0ms
+   ✓ plain group > plain passing check number 10 0ms
+   ✓ plain group > plain passing check number 11 0ms
+   ✓ plain group > plain passing check number 12 0ms
+   ✓ plain group > plain passing check number 13 0ms
+   ✓ plain group > plain passing check number 14 0ms
+   ✓ plain group > plain passing check number 15 0ms
+   ✓ plain group > plain passing check number 16 0ms
+   ✓ plain group > plain passing check number 17 0ms
+   ✓ plain group > plain passing check number 18 0ms
+   ✓ plain group > plain passing check number 19 0ms
+   ✓ plain group > plain passing check number 20 0ms
+   ✓ plain group > plain passing check number 21 0ms
+   ✓ plain group > plain passing check number 22 0ms
+   ✓ plain group > plain passing check number 23 0ms
+   ✓ plain group > plain passing check number 24 0ms
+   ✓ plain group > plain passing check number 25 0ms
+   ✓ plain group > plain passing check number 26 0ms
+   ✓ plain group > plain passing check number 27 0ms
+   ✓ plain group > plain passing check number 28 0ms
+   ✓ plain group > plain passing check number 29 0ms
+   ✓ plain group > plain passing check number 30 0ms
+   ✓ plain group > plain passing check number 31 0ms
+   ✓ plain group > plain passing check number 32 0ms
+   ✓ plain group > plain passing check number 33 0ms
+   ✓ plain group > plain passing check number 34 0ms
+   ✓ plain group > plain passing check number 35 0ms
+   ✓ plain group > plain passing check number 36 0ms
+   ✓ plain group > plain passing check number 37 0ms
+   ✓ plain group > plain passing check number 38 0ms
+   ✓ plain group > plain passing check number 39 0ms
+   ✓ plain group > plain passing check number 40 0ms
+   ✓ plain group > plain passing check number 41 0ms
+   ✓ plain group > plain passing check number 42 0ms
+   ✓ plain group > plain passing check number 43 0ms
+   ✓ plain group > plain passing check number 44 0ms
+   ✓ plain group > plain passing check number 45 0ms
+   ✓ plain group > plain passing check number 46 0ms
+   ✓ plain group > plain passing check number 47 0ms
+   ✓ plain group > plain passing check number 48 0ms
+   ✓ plain group > plain passing check number 49 0ms
+   ✓ plain group > plain passing check number 50 0ms
+   ✓ plain group > plain passing check number 51 0ms
+   ✓ plain group > plain passing check number 52 0ms
+   ✓ plain group > plain passing check number 53 0ms
+   ✓ plain group > plain passing check number 54 0ms
+   ✓ plain group > plain passing check number 55 0ms
+   ✓ plain group > plain passing check number 56 0ms
+   ✓ plain group > plain passing check number 57 0ms
+   ✓ plain group > plain passing check number 58 0ms
+   ✓ plain group > plain passing check number 59 0ms
+   ✓ plain group > plain passing check number 60 0ms
+   ✓ plain group > plain passing check number 61 0ms
+   ✓ plain group > plain passing check number 62 0ms
+   ✓ plain group > plain passing check number 63 0ms
+   ✓ plain group > plain passing check number 64 0ms
+   ✓ plain group > plain passing check number 65 0ms
+   ✓ plain group > plain passing check number 66 0ms
+   ✓ plain group > plain passing check number 67 0ms
+   ✓ plain group > plain passing check number 68 0ms
+   ✓ plain group > plain passing check number 69 0ms
+   ✓ plain group > plain passing check number 70 0ms
+   ✓ plain group > plain passing check number 71 0ms
+   ✓ plain group > plain passing check number 72 0ms
+   ✓ plain group > plain passing check number 73 0ms
+   ✓ plain group > plain passing check number 74 0ms
+   ✓ plain group > plain passing check number 75 0ms
+   ✓ plain group > plain passing check number 76 0ms
+   ✓ plain group > plain passing check number 77 0ms
+   ✓ plain group > plain passing check number 78 0ms
+   ✓ plain group > plain passing check number 79 0ms
+   ✓ plain group > plain passing check number 80 0ms
+   ✓ plain group > plain passing check number 81 0ms
+   ✓ plain group > plain passing check number 82 0ms
+   ✓ plain group > plain passing check number 83 0ms
+   ✓ plain group > plain passing check number 84 0ms
+   ✓ plain group > plain passing check number 85 0ms
+   ✓ plain group > plain passing check number 86 0ms
+   ✓ plain group > plain passing check number 87 0ms
+   ✓ plain group > plain passing check number 88 0ms
+   ✓ plain group > plain passing check number 89 0ms
+   ✓ plain group > plain passing check number 90 0ms
+   ✓ plain group > plain passing check number 91 0ms
+   ✓ plain group > plain passing check number 92 0ms
+   ✓ plain group > plain passing check number 93 0ms
+   ✓ plain group > plain passing check number 94 0ms
+   ✓ plain group > plain passing check number 95 0ms
+   ✓ plain group > plain passing check number 96 0ms
+   ✓ plain group > plain passing check number 97 0ms
+   ✓ plain group > plain passing check number 98 0ms
+   ✓ plain group > plain passing check number 99 0ms
+   ✓ plain group > plain passing check number 100 0ms
+   ✓ plain group > plain passing check number 101 0ms
+   ✓ plain group > plain passing check number 102 0ms
+   ✓ plain group > plain passing check number 103 0ms
+   ✓ plain group > plain passing check number 104 0ms
+   ✓ plain group > plain passing check number 105 0ms
+   ✓ plain group > plain passing check number 106 0ms
+   ✓ plain group > plain passing check number 107 0ms
+   ✓ plain group > plain passing check number 108 0ms
+   ✓ plain group > plain passing check number 109 0ms
+   ✓ plain group > plain passing check number 110 0ms
+   ✓ plain group > plain passing check number 111 0ms
+   ✓ plain group > plain passing check number 112 0ms
+   ✓ plain group > plain passing check number 113 0ms
+   ✓ plain group > plain passing check number 114 0ms
+   ✓ plain group > plain passing check number 115 0ms
+   ✓ plain group > plain passing check number 116 0ms
+   ✓ plain group > plain passing check number 117 0ms
+   ✓ plain group > plain passing check number 118 0ms
+   ✓ plain group > plain passing check number 119 0ms
+   ✓ plain group > plain passing check number 120 0ms
+   ✓ plain group > plain passing check number 121 0ms
+   ✓ plain group > plain passing check number 122 0ms
+   ✓ plain group > plain passing check number 123 0ms
+   ✓ plain group > plain passing check number 124 0ms
+   ✓ plain group > plain passing check number 125 0ms
+   ✓ plain group > plain passing check number 126 0ms
+   ✓ plain group > plain passing check number 127 0ms
+   ✓ plain group > plain passing check number 128 0ms
+   ✓ plain group > plain passing check number 129 0ms
+   ✓ plain group > plain passing check number 130 0ms
+   ✓ plain group > plain passing check number 131 0ms
+   ✓ plain group > plain passing check number 132 0ms
+   ✓ plain group > plain passing check number 133 0ms
+   ✓ plain group > plain passing check number 134 0ms
+   ✓ plain group > plain passing check number 135 0ms
+   ✓ plain group > plain passing check number 136 0ms
+   ✓ plain group > plain passing check number 137 0ms
+   ✓ plain group > plain passing check number 138 0ms
+   ✓ plain group > plain passing check number 139 0ms
+   ✓ plain group > plain passing check number 140 0ms
+   ✓ plain group > plain passing check number 141 0ms
+   ✓ plain group > plain passing check number 142 0ms
+   ✓ plain group > plain passing check number 143 0ms
+   ✓ plain group > plain passing check number 144 0ms
+   ✓ plain group > plain passing check number 145 0ms
+   ✓ plain group > plain passing check number 146 0ms
+   ✓ plain group > plain passing check number 147 0ms
+   ✓ plain group > plain passing check number 148 0ms
+   ✓ plain group > plain passing check number 149 0ms
+   ✓ plain group > plain passing check number 150 0ms
+   ✓ plain group > plain passing check number 151 0ms
+   ✓ plain group > plain passing check number 152 0ms
+   ✓ plain group > plain passing check number 153 0ms
+   ✓ plain group > plain passing check number 154 0ms
+   ✓ plain group > plain passing check number 155 0ms
+   ✓ plain group > plain passing check number 156 0ms
+   ✓ plain group > plain passing check number 157 0ms
+   ✓ plain group > plain passing check number 158 0ms
+   ✓ plain group > plain passing check number 159 0ms
+   ✓ plain group > plain passing check number 160 0ms
+   ✓ plain group > plain passing check number 161 0ms
+   ✓ plain group > plain passing check number 162 0ms
+   ✓ plain group > plain passing check number 163 0ms
+   ✓ plain group > plain passing check number 164 0ms
+   ✓ plain group > plain passing check number 165 0ms
+   ✓ plain group > plain passing check number 166 0ms
+   ✓ plain group > plain passing check number 167 0ms
+   ✓ plain group > plain passing check number 168 0ms
+   ✓ plain group > plain passing check number 169 0ms
+   ✓ plain group > plain passing check number 170 0ms
+   ✓ plain group > plain passing check number 171 0ms
+   ✓ plain group > plain passing check number 172 0ms
+   ✓ plain group > plain passing check number 173 0ms
+   ✓ plain group > plain passing check number 174 0ms
+   ✓ plain group > plain passing check number 175 0ms
+   ✓ plain group > plain passing check number 176 0ms
+   ✓ plain group > plain passing check number 177 0ms
+   ✓ plain group > plain passing check number 178 0ms
+   ✓ plain group > plain passing check number 179 0ms
+   ✓ plain group > plain passing check number 180 0ms
+   ✓ plain group > plain passing check number 181 0ms
+   ✓ plain group > plain passing check number 182 0ms
+   ✓ plain group > plain passing check number 183 0ms
+   ✓ plain group > plain passing check number 184 0ms
+   ✓ plain group > plain passing check number 185 0ms
+   ✓ plain group > plain passing check number 186 0ms
+   ✓ plain group > plain passing check number 187 0ms
+   ✓ plain group > plain passing check number 188 0ms
+   ✓ plain group > plain passing check number 189 0ms
+   ✓ plain group > plain passing check number 190 0ms
+   ✓ plain group > plain passing check number 191 0ms
+   ✓ plain group > plain passing check number 192 0ms
+   ✓ plain group > plain passing check number 193 0ms
+   ✓ plain group > plain passing check number 194 0ms
+   ✓ plain group > plain passing check number 195 0ms
+   ✓ plain group > plain passing check number 196 0ms
+   ✓ plain group > plain passing check number 197 0ms
+   ✓ plain group > plain passing check number 198 0ms
+   ✓ plain group > plain passing check number 199 0ms
+   ✓ plain group > plain passing check number 200 0ms
+   ✓ plain group > plain passing check number 201 0ms
+   ✓ plain group > plain passing check number 202 0ms
+   ✓ plain group > plain passing check number 203 0ms
+   ✓ plain group > plain passing check number 204 0ms
+   ✓ plain group > plain passing check number 205 0ms
+   ✓ plain group > plain passing check number 206 0ms
+   ✓ plain group > plain passing check number 207 0ms
+   ✓ plain group > plain passing check number 208 0ms
+   ✓ plain group > plain passing check number 209 0ms
+   ✓ plain group > plain passing check number 210 0ms
+   ✓ plain group > plain passing check number 211 0ms
+   ✓ plain group > plain passing check number 212 0ms
+   ✓ plain group > plain passing check number 213 0ms
+   ✓ plain group > plain passing check number 214 0ms
+   ✓ plain group > plain passing check number 215 0ms
+   ✓ plain group > plain passing check number 216 0ms
+   ✓ plain group > plain passing check number 217 0ms
+   ✓ plain group > plain passing check number 218 0ms
+   ✓ plain group > plain passing check number 219 0ms
+   ✓ plain group > plain passing check number 220 0ms
+   ✓ plain group > plain passing check number 221 0ms
+   ✓ plain group > plain passing check number 222 0ms
+   ✓ plain group > plain passing check number 223 0ms
+   ✓ plain group > plain passing check number 224 0ms
+   ✓ plain group > plain passing check number 225 0ms
+   ✓ plain group > plain passing check number 226 0ms
+   ✓ plain group > plain passing check number 227 0ms
+   ✓ plain group > plain passing check number 228 0ms
+   ✓ plain group > plain passing check number 229 0ms
+   ✓ plain group > plain passing check number 230 0ms
+   ✓ plain group > plain passing check number 231 0ms
+   ✓ plain group > plain passing check number 232 0ms
+   ✓ plain group > plain passing check number 233 0ms
+   ✓ plain group > plain passing check number 234 0ms
+   ✓ plain group > plain passing check number 235 0ms
+   ✓ plain group > plain passing check number 236 0ms
+   ✓ plain group > plain passing check number 237 0ms
+   ✓ plain group > plain passing check number 238 0ms
+   ✓ plain group > plain passing check number 239 0ms
+   ✓ plain group > plain passing check number 240 0ms
+   ✓ plain group > plain passing check number 241 0ms
+   ✓ plain group > plain passing check number 242 0ms
+   ✓ plain group > plain passing check number 243 0ms
+   ✓ plain group > plain passing check number 244 0ms
+   ✓ plain group > plain passing check number 245 0ms
+   ✓ plain group > plain passing check number 246 0ms
+   ✓ plain group > plain passing check number 247 0ms
+   ✓ plain group > plain passing check number 248 0ms
+   ✓ plain group > plain passing check number 249 0ms
+   ✓ plain group > plain passing check number 250 0ms
+   ✓ plain group > plain passing check number 251 0ms
+   ✓ plain group > plain passing check number 252 0ms
+   ✓ plain group > plain passing check number 253 0ms
+   ✓ plain group > plain passing check number 254 0ms
+   ✓ plain group > plain passing check number 255 0ms
+   ✓ plain group > plain passing check number 256 0ms
+   ✓ plain group > plain passing check number 257 0ms
+   ✓ plain group > plain passing check number 258 0ms
+   ✓ plain group > plain passing check number 259 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  beforeall.test.ts > db suite
+Error: beforeAll db connection refused
+ ❯ beforeall.test.ts:5:11
+      3| describe('db suite', () => {
+      4|   beforeAll(() => {
+      5|     throw new Error('beforeAll db connection refused');
+       |           ^
+      6|   });
+      7|   it('first test needs the db', () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  260 passed | 2 skipped (262)
+   Start at  17:26:22
+   Duration  161ms (transform 18ms, setup 0ms, collect 16ms, tests 8ms, environment 0ms, prepare 32ms)
+

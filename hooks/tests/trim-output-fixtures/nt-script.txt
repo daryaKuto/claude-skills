@@ -1,0 +1,132 @@
+step 0: processing record 0 of 120 with some padding text to be long
+step 1: processing record 1 of 120 with some padding text to be long
+step 2: processing record 2 of 120 with some padding text to be long
+step 3: processing record 3 of 120 with some padding text to be long
+step 4: processing record 4 of 120 with some padding text to be long
+step 5: processing record 5 of 120 with some padding text to be long
+step 6: processing record 6 of 120 with some padding text to be long
+step 7: processing record 7 of 120 with some padding text to be long
+step 8: processing record 8 of 120 with some padding text to be long
+step 9: processing record 9 of 120 with some padding text to be long
+step 10: processing record 10 of 120 with some padding text to be long
+step 11: processing record 11 of 120 with some padding text to be long
+step 12: processing record 12 of 120 with some padding text to be long
+step 13: processing record 13 of 120 with some padding text to be long
+step 14: processing record 14 of 120 with some padding text to be long
+step 15: processing record 15 of 120 with some padding text to be long
+step 16: processing record 16 of 120 with some padding text to be long
+step 17: processing record 17 of 120 with some padding text to be long
+step 18: processing record 18 of 120 with some padding text to be long
+step 19: processing record 19 of 120 with some padding text to be long
+step 20: processing record 20 of 120 with some padding text to be long
+step 21: processing record 21 of 120 with some padding text to be long
+step 22: processing record 22 of 120 with some padding text to be long
+step 23: processing record 23 of 120 with some padding text to be long
+step 24: processing record 24 of 120 with some padding text to be long
+step 25: processing record 25 of 120 with some padding text to be long
+step 26: processing record 26 of 120 with some padding text to be long
+step 27: processing record 27 of 120 with some padding text to be long
+step 28: processing record 28 of 120 with some padding text to be long
+step 29: processing record 29 of 120 with some padding text to be long
+step 30: processing record 30 of 120 with some padding text to be long
+step 31: processing record 31 of 120 with some padding text to be long
+step 32: processing record 32 of 120 with some padding text to be long
+step 33: processing record 33 of 120 with some padding text to be long
+step 34: processing record 34 of 120 with some padding text to be long
+step 35: processing record 35 of 120 with some padding text to be long
+step 36: processing record 36 of 120 with some padding text to be long
+step 37: processing record 37 of 120 with some padding text to be long
+step 38: processing record 38 of 120 with some padding text to be long
+step 39: processing record 39 of 120 with some padding text to be long
+step 40: processing record 40 of 120 with some padding text to be long
+step 41: processing record 41 of 120 with some padding text to be long
+step 42: processing record 42 of 120 with some padding text to be long
+step 43: processing record 43 of 120 with some padding text to be long
+step 44: processing record 44 of 120 with some padding text to be long
+step 45: processing record 45 of 120 with some padding text to be long
+step 46: processing record 46 of 120 with some padding text to be long
+step 47: processing record 47 of 120 with some padding text to be long
+step 48: processing record 48 of 120 with some padding text to be long
+step 49: processing record 49 of 120 with some padding text to be long
+step 50: processing record 50 of 120 with some padding text to be long
+step 51: processing record 51 of 120 with some padding text to be long
+step 52: processing record 52 of 120 with some padding text to be long
+step 53: processing record 53 of 120 with some padding text to be long
+step 54: processing record 54 of 120 with some padding text to be long
+step 55: processing record 55 of 120 with some padding text to be long
+step 56: processing record 56 of 120 with some padding text to be long
+step 57: processing record 57 of 120 with some padding text to be long
+step 58: processing record 58 of 120 with some padding text to be long
+step 59: processing record 59 of 120 with some padding text to be long
+step 60: processing record 60 of 120 with some padding text to be long
+step 61: processing record 61 of 120 with some padding text to be long
+step 62: processing record 62 of 120 with some padding text to be long
+step 63: processing record 63 of 120 with some padding text to be long
+step 64: processing record 64 of 120 with some padding text to be long
+step 65: processing record 65 of 120 with some padding text to be long
+step 66: processing record 66 of 120 with some padding text to be long
+step 67: processing record 67 of 120 with some padding text to be long
+step 68: processing record 68 of 120 with some padding text to be long
+step 69: processing record 69 of 120 with some padding text to be long
+step 70: processing record 70 of 120 with some padding text to be long
+step 71: processing record 71 of 120 with some padding text to be long
+step 72: processing record 72 of 120 with some padding text to be long
+step 73: processing record 73 of 120 with some padding text to be long
+step 74: processing record 74 of 120 with some padding text to be long
+step 75: processing record 75 of 120 with some padding text to be long
+step 76: processing record 76 of 120 with some padding text to be long
+step 77: processing record 77 of 120 with some padding text to be long
+step 78: processing record 78 of 120 with some padding text to be long
+step 79: processing record 79 of 120 with some padding text to be long
+step 80: processing record 80 of 120 with some padding text to be long
+step 81: processing record 81 of 120 with some padding text to be long
+step 82: processing record 82 of 120 with some padding text to be long
+step 83: processing record 83 of 120 with some padding text to be long
+step 84: processing record 84 of 120 with some padding text to be long
+step 85: processing record 85 of 120 with some padding text to be long
+step 86: processing record 86 of 120 with some padding text to be long
+step 87: processing record 87 of 120 with some padding text to be long
+step 88: processing record 88 of 120 with some padding text to be long
+step 89: processing record 89 of 120 with some padding text to be long
+step 90: processing record 90 of 120 with some padding text to be long
+step 91: processing record 91 of 120 with some padding text to be long
+step 92: processing record 92 of 120 with some padding text to be long
+step 93: processing record 93 of 120 with some padding text to be long
+step 94: processing record 94 of 120 with some padding text to be long
+step 95: processing record 95 of 120 with some padding text to be long
+step 96: processing record 96 of 120 with some padding text to be long
+step 97: processing record 97 of 120 with some padding text to be long
+step 98: processing record 98 of 120 with some padding text to be long
+step 99: processing record 99 of 120 with some padding text to be long
+step 100: processing record 100 of 120 with some padding text to be long
+step 101: processing record 101 of 120 with some padding text to be long
+step 102: processing record 102 of 120 with some padding text to be long
+step 103: processing record 103 of 120 with some padding text to be long
+step 104: processing record 104 of 120 with some padding text to be long
+step 105: processing record 105 of 120 with some padding text to be long
+step 106: processing record 106 of 120 with some padding text to be long
+step 107: processing record 107 of 120 with some padding text to be long
+step 108: processing record 108 of 120 with some padding text to be long
+step 109: processing record 109 of 120 with some padding text to be long
+step 110: processing record 110 of 120 with some padding text to be long
+step 111: processing record 111 of 120 with some padding text to be long
+step 112: processing record 112 of 120 with some padding text to be long
+step 113: processing record 113 of 120 with some padding text to be long
+step 114: processing record 114 of 120 with some padding text to be long
+step 115: processing record 115 of 120 with some padding text to be long
+step 116: processing record 116 of 120 with some padding text to be long
+step 117: processing record 117 of 120 with some padding text to be long
+step 118: processing record 118 of 120 with some padding text to be long
+step 119: processing record 119 of 120 with some padding text to be long
+file:///tmp/work/trim-hook/fx/nt/script.mjs:3
+  throw new TypeError(`record ${id} has no owner`);
+        ^
+
+TypeError: record 77 has no owner
+    at load (file:///tmp/work/trim-hook/fx/nt/script.mjs:3:9)
+    at file:///tmp/work/trim-hook/fx/nt/script.mjs:5:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.22.1
