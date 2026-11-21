@@ -4,6 +4,8 @@
   "heavy_lock_script": "",
   "heavy_scope_roots": [],
   "lane_dirs": [],
+  "plans_dirs": [],
+  "lane_note_dirs": [],
   "free_disk_roots": [],
   "trusted_github_owners": []
 }

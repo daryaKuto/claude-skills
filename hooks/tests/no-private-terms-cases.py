@@ -5,8 +5,9 @@ The hooks are generic: project details come from hooks/config.json, so no repo n
 name, date of an incident or home path may appear in any file here. Add a word to TERMS when a new private detail could leak.
 Words are written as fragments so that this file does not contain them itself.
 
-Scope: every text file under hooks/ and docs/, plus the lines this branch adds to README.md and CLAUDE.md (read from
-`git diff` against origin/main, skipped when git cannot answer). Older files such as skills/ are not scanned.
+Scope: every text file under hooks/, docs/, skills/full-send-dev/ and skills/plan-and-build/templates/, plus the lines this
+branch adds to README.md and CLAUDE.md (read from `git diff` against origin/main, skipped when git cannot answer). Older files
+such as the rest of skills/ are not scanned.
 Run on its own: python3 hooks/tests/no-private-terms-cases.py"""
 import os
 import re
@@ -51,7 +52,8 @@ def report(label, n, w):
     print(f"HIT {label}:{n}: {w}")
 
 
-scan_dirs = [HOOKS] + ([os.path.join(ROOT, "docs")] if os.path.isdir(os.path.join(ROOT, "docs")) else [])
+EXTRA_SCAN = ["docs", "skills/full-send-dev", "skills/plan-and-build/templates"]  # newer prose files that must stay generic
+scan_dirs = [HOOKS] + [os.path.join(ROOT, x) for x in EXTRA_SCAN if os.path.isdir(os.path.join(ROOT, x))]
 for top in scan_dirs:
     for d, dirs, files in os.walk(top):
         dirs[:] = [x for x in dirs if x not in SKIP_DIRS]

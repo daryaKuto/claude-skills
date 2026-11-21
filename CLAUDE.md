@@ -359,6 +359,10 @@ message: follow the message, do not respell the command.
   (`--yes` alone). Docker volumes and other sessions' containers are never touched.
 - Guard files (`~/.claude/hooks/`, `settings*.json`, `CLAUDE.md`) are edited by the main session in a reviewed change, never by
   a subagent. Held by `hooks/write-guard.py` and `hooks/tamper-guard.py`.
+- Lanes (side sessions an orchestrator starts) keep their docs under the orchestrator's plan:
+  `docs/plans/<plan>/lanes/<lane>/handoff.md`, with kept files in `scratch/`. Held by `hooks/write-guard.py` reading `plans_dirs`.
+- CI runs only on a push to the dev branch, not on pull requests into it. A PR into the dev branch merges on a logged local proof
+  of its head commit (skill `full-send-dev`, "No PR CI" in `plan-and-build`). Held by the prose of those skills.
 - Stop processes only by the pid you recorded when you started them. `pkill`, `killall`, `kill -1` and `kill 0` are refused
   by `hooks/kill-guard.py`.
 

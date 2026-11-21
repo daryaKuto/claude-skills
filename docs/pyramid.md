@@ -36,6 +36,9 @@ This repo ships layers 2, 3 and 4 for the rules below. Layers 1 and 5 are yours.
 | Guards, settings and their switches are not edited from Bash | Static | `hooks/tamper-guard.py` | `tests/tamper-guard-cases.py` |
 | A guard folder's parents are guarded too (`rm`, `mv`, whole-folder copy, git work-tree) | Static | `hooks/tamper-guard.py` | `tests/tamper-ancestors-cases.py` (rows generated from the guard folders) |
 | Subagents cannot Write or Edit guard files | Static | `hooks/write-guard.py` | `tests/write-guard-cases.py` |
+| Lane docs live under the orchestrator's plan (`<plans>/<plan>/lanes/<lane>/`); `lane-*` docs and `.bak` copies elsewhere under a plans folder are refused, for every writer | Static | `hooks/write-guard.py` reading `plans_dirs` and `lane_note_dirs` (empty `plans_dirs` turns it off) | `tests/write-guard-cases.py` |
+| A small safe change goes from edit to a smoke-tested dev deploy with local proof and a separate review | Prose | `skills/full-send-dev/SKILL.md`, `skills/plan-and-build/templates/lane-handoff.md` | none (the agent can forget it) |
+| CI runs only on a push to the dev branch; a PR into it merges on a logged local proof | Prose | "No PR CI" in `skills/plan-and-build/SKILL.md`, `skills/full-send-dev/SKILL.md` | none |
 | No `pkill`, `killall`, `kill -1` or `kill 0` | Static | `hooks/kill-guard.py` | `tests/kill-guard-cases.py`, `tests/bypass-corpus.py` |
 | Long commands run in the background | Static | `hooks/heavy-guard.py` (rule e), `env.BASH_DEFAULT_TIMEOUT_MS` | `tests/heavy-guard-cases.py`, `tests/readonly-battery.py` |
 | Nothing heavy starts when memory or disk is critical | Static | `hooks/heavy-guard.py` (rule b), `hooks/lib/limits.json`, `hooks/lib/mem-check.sh` | `tests/heavy-guard-cases.py` |
